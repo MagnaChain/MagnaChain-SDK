@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellLinkForUnity", "CellLinkForUnity.csproj", "{AAE8CABF-CCD0-2BCD-4C2E-0602125C8188}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellLinkForUnity.Editor", "CellLinkForUnity.Editor.csproj", "{05BE16DE-BE7B-D560-FBB7-5F97E409412B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE8CABF-CCD0-2BCD-4C2E-0602125C8188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE8CABF-CCD0-2BCD-4C2E-0602125C8188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE8CABF-CCD0-2BCD-4C2E-0602125C8188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE8CABF-CCD0-2BCD-4C2E-0602125C8188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05BE16DE-BE7B-D560-FBB7-5F97E409412B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05BE16DE-BE7B-D560-FBB7-5F97E409412B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05BE16DE-BE7B-D560-FBB7-5F97E409412B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05BE16DE-BE7B-D560-FBB7-5F97E409412B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

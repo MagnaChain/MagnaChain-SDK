@@ -1,0 +1,30 @@
+{
+  "name": "bitcore-rpc",
+  "main": "bitcore-rpc.min.js",
+  "version": "0.8.5",
+  "homepage": "http://bitcore.io",
+  "authors": [
+    "BitPay, Inc."
+  ],
+  "description": "An interface to the bitcoind RPC API for bitcore",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "bitcoin",
+    "bitcore",
+    "btc",
+    "satoshi"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "CONTRIBUTING.md",
+    "gulpfile.js",
+    "lib",
+    "index.js",
+    "karma.conf.js",
+    "npm-shrinkwrap.json",
+    "test"
+  ]
+}
