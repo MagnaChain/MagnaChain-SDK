@@ -1,5 +1,5 @@
 
-declare module celllink
+declare module magnachain
 {
     class Buffer
     {
@@ -389,7 +389,7 @@ declare module celllink
         */
         constructor(args: any);
 
-        script: Script;
+        _script: Script;
 
         satoshis: number;
 
@@ -429,6 +429,8 @@ declare module celllink
         obj.output = this.output.toObject();
         */
         toObject(): any;
+
+        _script: Script;
 
         // return this
         setScript(script: Script): Input;
