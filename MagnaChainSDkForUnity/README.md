@@ -4,7 +4,7 @@ MagnaChain SDK For Unity3D provides convenient blockchain-related functionality 
 
 # Download and install  
 
-sers can download the MagnaChain SDK for Unity3D plug-in directly from the Unity3D resource store and import the project directly. The directory is as follows:  
+Users can download the MagnaChain SDK for Unity3D plug-in directly from this repository and import the project directly. The directory is as follows:  
 
 ![image](https://github.com/MagnaChain/MagnaChain-SDK/blob/master/MagnaChainSDkForUnity/image/folders.png?raw=true)  
 
