@@ -40,6 +40,7 @@ declare module magnachain
     class Address
     {
         static PayToPublicKeyHash: string;
+        static PayToContractHash : string;// system internal use
         static PayToScriptHash: string;
 
         // data 可以是 Buffer 或者 Uint8Array，或者 PublicKey, Script 对象，或地址 string
@@ -445,6 +446,14 @@ declare module magnachain
         isNull(): boolean;
     }
 
+// ContractData
+//   address; // contract address
+//   sender;  // sender address
+//   codeOrFunc; // code or function name
+//   args; // call contraction args
+//   amountOut; //
+//   signature;  // contract data signature
+
     class Transaction
     {
         // serialized: hex string or Buffer or Object(JSON))
@@ -457,6 +466,8 @@ declare module magnachain
         inputs: Array<Input>;
 
         outputs: Array<Output>;
+
+        contractdata: any;// ContractData
 
         // return hex string
         serialize(unsafe: boolean): string;

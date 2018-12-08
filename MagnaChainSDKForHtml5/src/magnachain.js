@@ -1,6 +1,6 @@
 'use strict';
 
-var celllink = {};
+var magnachain = {};
 
 // function assert(val, msg)
 // {
@@ -245,15 +245,15 @@ var traverseRoot = function (parent, errorsDefinition)
     return parent;
 };
 
-celllink.Error = function ()
+magnachain.Error = function ()
 {
     this.message = 'Internal error';
     this.stack = this.message + '\n' + (new Error()).stack;
 };
-celllink.Error.prototype = Object.create(Error.prototype);
-celllink.Error.prototype.name = 'bitcore.Error';
+magnachain.Error.prototype = Object.create(Error.prototype);
+magnachain.Error.prototype.name = 'bitcore.Error';
 
-traverseRoot(celllink.Error, _xerrorData);
+traverseRoot(magnachain.Error, _xerrorData);
 
 // module.exports = bitcore.Error;
 // module.exports.extend = function (spec)
@@ -261,10 +261,10 @@ traverseRoot(celllink.Error, _xerrorData);
 //   return traverseNode(bitcore.Error, spec);
 // };
 //bitcore.Error.extend = traverseNode(bitcore.Error, spec);
-errors = celllink.Error;
+errors = magnachain.Error;
 errors.extend = function (spec)
 {
-    return traverseNode(celllink.Error, spec);
+    return traverseNode(magnachain.Error, spec);
 };
 // errors end-------------------------------------------------------------------------------
 
@@ -359,7 +359,7 @@ var isNaturalNumber = function (value)
 //bitcore.isNaturalNumber = isNaturalNumber;
 JSUtil.isNaturalNumber = isNaturalNumber;
 
-celllink.JSUtil = JSUtil;
+magnachain.JSUtil = JSUtil;
 // util/js end------------------------------------------------------------------------------
 
 // util/preconditions being-----------------------------------------------------------------
@@ -412,7 +412,7 @@ var checkArgumentType = function (argument, type, argumentName)
 }
 $.checkArgumentType = checkArgumentType;
 //bitcore.checkArgumentType = checkArgumentType;
-celllink.$ = $;
+magnachain.$ = $;
 // util/preconditions end-------------------------------------------------------------------
 
 // util/buffer begin------------------------------------------------------------------------
@@ -628,7 +628,7 @@ BufferUtil.hexToBuffer = hexToBuffer;
 BufferUtil.NULL_HASH = fill(new Buffer(32), 0);
 BufferUtil.EMPTY_BUFFER = new Buffer(0);
 
-celllink.BufferUtil = BufferUtil;
+magnachain.BufferUtil = BufferUtil;
 // util/buffer end--------------------------------------------------------------------------
 
 // opcode begin-----------------------------------------------------------------------------
@@ -859,8 +859,9 @@ Opcode.map = {
     OP_NOP10: 185,
 
     // smart contract
-    OP_PUB_CONTRACT: 192,
-    OP_TRANS_CONTRACT: 193,
+    OP_CONTRACT_ADDR: 192,
+    OP_CONTRACT: 193,
+    OP_CONTRACT_CHANGE: 194,
 
     OP_CREATE_BRANCH: 208,
     OP_TRANS_BRANCH: 209,
@@ -905,7 +906,7 @@ Opcode.prototype.inspect = function ()
 };
 
 //module.exports = Opcode;
-celllink.Opcode = Opcode;
+magnachain.Opcode = Opcode;
 // opcode end-------------------------------------------------------------------------------
 
 // crypto/bn begin-------------------------------------------------------------------------------
@@ -1151,7 +1152,7 @@ BN.pad = function (buf, natlen, size)
     return rbuf;
 };
 
-celllink.BN = BN;
+magnachain.BN = BN;
 // crypto/bn end-------------------------------------------------------------------------------
 
 // crypto/random begin-------------------------------------------------------------------------------
@@ -1219,7 +1220,7 @@ Random.getPseudoRandomBuffer = function (size)
     return b;
 };
 
-celllink.Random = Random;
+magnachain.Random = Random;
 // crypto/random end-------------------------------------------------------------------------------
 
 // crypto/hash begin-------------------------------------------------------------------------------
@@ -1356,7 +1357,7 @@ Hash.sha512hmac = function (data, key)
     return Hash.hmac(Hash.sha512, data, key);
 };
 
-celllink.Hash = Hash;
+magnachain.Hash = Hash;
 // crypto/hash end-------------------------------------------------------------------------------
 
 // crypto/signature begin-------------------------------------------------------------------------------
@@ -1708,7 +1709,7 @@ Signature.SIGHASH_SINGLE = 0x03;
 Signature.SIGHASH_ANYONECANPAY = 0x80;
 
 //module.exports = Signature;
-celllink.Signature = Signature;
+magnachain.Signature = Signature;
 // crypto/signature end-------------------------------------------------------------------------------
 
 // elliptic/utils begin----------------------------------------------------------------------
@@ -1844,7 +1845,7 @@ function intFromLE(bytes)
 }
 elliptic_utils.intFromLE = intFromLE;
 
-celllink.elliptic_utils = elliptic_utils;
+magnachain.elliptic_utils = elliptic_utils;
 // elliptic/utils end----------------------------------------------------------------------
 
 // elliptic/curve/base begin----------------------------------------------------------------------
@@ -5771,7 +5772,7 @@ Point.pointToCompressed = function pointToCompressed(point)
     return BufferUtil.concat([prefix, xbuf]);
 };
 
-celllink.Point = Point;
+magnachain.Point = Point;
 // crypto/point end----------------------------------------------------------------------
 
 // networks begin----------------------------------------------------------------------
@@ -5841,6 +5842,7 @@ function get(arg, keys)
  * @param {Number} data.pubkeyhash - The publickey hash prefix
  * @param {Number} data.privatekey - The privatekey prefix
  * @param {Number} data.scripthash - The scripthash prefix
+ * @param {Number} data.contracthash - The contracthash prefix
  * @param {Number} data.xpubkey - The extended public key magic
  * @param {Number} data.xprivkey - The extended private key magic
  * @param {Number} data.networkMagic - The network magic number
@@ -5858,6 +5860,7 @@ function addNetwork(data)
         pubkeyhash: data.pubkeyhash,
         privatekey: data.privatekey,
         scripthash: data.scripthash,
+        contracthash: data.contracthash,
         xpubkey: data.xpubkey,
         xprivkey: data.xprivkey
     });
@@ -5922,11 +5925,11 @@ function removeNetwork(network)
 addNetwork({
     name: 'livenet',
     alias: 'mainnet',
-    //pubkeyhash: 0x00,
-    pubkeyhash: 0x4B,     // X
+    pubkeyhash: 75,     // 0x4B X pubkeyhash: 0x00,
+    scripthash: 62,     // 0x3e S scripthash: 0x05,
+    contracthash: 69,   //0x45
     privatekey: 0x80,
-    //scripthash: 0x05,
-    scripthash: 0x3e,     // S
+    
     xpubkey: 0x0488b21e,
     xprivkey: 0x0488ade4,
     networkMagic: 0xf9beb4d9,
@@ -5950,9 +5953,11 @@ var livenet = get('livenet');
 addNetwork({
     name: 'testnet',
     alias: 'regtest',
-    pubkeyhash: 0x6f,
+    pubkeyhash: 110, //0x6e
+    scripthash: 195, //0xc3
+    contracthash: 199,//0xc7
+
     privatekey: 0xef,
-    scripthash: 0xc4,
     xpubkey: 0x043587cf,
     xprivkey: 0x04358394
 });
@@ -6087,7 +6092,7 @@ Networks.get = get;
 Networks.enableRegtest = enableRegtest;
 Networks.disableRegtest = disableRegtest;
 
-celllink.Networks = Networks;
+magnachain.Networks = Networks;
 // networks end----------------------------------------------------------------------
 
 // publickey begin----------------------------------------------------------------------
@@ -6548,7 +6553,7 @@ PublicKey.prototype.inspect = function ()
         (this.compressed ? '' : ', uncompressed') + '>';
 };
 
-celllink.PublicKey = PublicKey;
+magnachain.PublicKey = PublicKey;
 // publickey end----------------------------------------------------------------------
 
 // crypto/ecdsa begin----------------------------------------------------------------------
@@ -6887,7 +6892,7 @@ ECDSA.verify = function (hashbuf, sig, pubkey, endian)
     }).verify().verified;
 };
 
-celllink.ECDSA = ECDSA;
+magnachain.ECDSA = ECDSA;
 // crypto/ecdsa end----------------------------------------------------------------------
 
 // unit begin----------------------------------------------------------------------
@@ -7152,7 +7157,7 @@ Unit.prototype.inspect = function ()
     return '<Unit: ' + this.toString() + '>';
 };
 
-celllink.Unit = Unit;
+magnachain.Unit = Unit;
 // unit end----------------------------------------------------------------------
 
 // safe buffer begin----------------------------------------------------------------------
@@ -7440,7 +7445,7 @@ Base58.prototype.toString = function ()
     return Base58.encode(this.buf);
 };
 
-celllink.Base58 = Base58;
+magnachain.Base58 = Base58;
 // encoding/base58 end----------------------------------------------------------------------
 
 // encoding/base58check begin----------------------------------------------------------------------
@@ -7553,7 +7558,7 @@ Base58Check.prototype.toString = function ()
     return Base58Check.encode(this.buf);
 };
 
-celllink.Base58Check = Base58Check;
+magnachain.Base58Check = Base58Check;
 // encoding/base58check end----------------------------------------------------------------------
 
 // encoding/bufferreader begin----------------------------------------------------------------------
@@ -7786,7 +7791,7 @@ BufferReader.prototype.readReverse = function (len)
     return BufferUtil.reverse(buf);
 };
 
-celllink.BufferReader = BufferReader;
+magnachain.BufferReader = BufferReader;
 // encoding/bufferreader end----------------------------------------------------------------------
 
 // encoding/bufferwriter begin----------------------------------------------------------------------
@@ -7964,7 +7969,7 @@ BufferWriter.varintBufBN = function (bn)
     return buf;
 };
 
-celllink.BufferWriter = BufferWriter;
+magnachain.BufferWriter = BufferWriter;
 // encoding/bufferwriter end----------------------------------------------------------------------
 
 // encoding/varint begin----------------------------------------------------------------------
@@ -8053,7 +8058,7 @@ Varint.prototype.toNumber = function ()
 };
 
 //module.exports = Varint;
-celllink.Varint = Varint;
+magnachain.Varint = Varint;
 // encoding/varint end----------------------------------------------------------------------
 
 // address begin----------------------------------------------------------------------
@@ -8128,7 +8133,7 @@ function Address(data, network, type)
         throw new TypeError('Second argument must be "livenet" or "testnet".');
     }
 
-    if (type && (type !== Address.PayToPublicKeyHash && type !== Address.PayToScriptHash))
+    if (type && (type !== Address.PayToPublicKeyHash && type !== Address.PayToScriptHash && type !== Address.PayToContractHash))
     {
         throw new TypeError('Third argument must be "pubkeyhash" or "scripthash".');
     }
@@ -8186,6 +8191,8 @@ Address.prototype._classifyArguments = function (data, network, type)
 /** @static */
 Address.PayToPublicKeyHash = 'pubkeyhash';
 /** @static */
+Address.PayToContractHash = 'contracthash';
+/** @static */
 Address.PayToScriptHash = 'scripthash';
 
 /**
@@ -8240,6 +8247,7 @@ Address._classifyFromVersion = function (buffer)
 
     var pubkeyhashNetwork = Networks.get(buffer[0], 'pubkeyhash');
     var scripthashNetwork = Networks.get(buffer[0], 'scripthash');
+    var contracthashNetwork = Networks.get(buffer[0], 'contracthash');;
 
     if (pubkeyhashNetwork)
     {
@@ -8249,6 +8257,10 @@ Address._classifyFromVersion = function (buffer)
     {
         version.network = scripthashNetwork;
         version.type = Address.PayToScriptHash;
+    } else if (contracthashNetwork)
+    {
+        version.network = contracthashNetwork;
+        version.type = Address.PayToContractHash;
     }
 
     return version;
@@ -8336,6 +8348,8 @@ Address._transformScript = function (script, network)
     }
     return info;
 };
+
+//
 
 /**
  * Creates a P2SH address from a set of public keys and a threshold.
@@ -8607,7 +8621,7 @@ Address.prototype.inspect = function ()
 };
 
 //module.exports = Address;
-celllink.Address = Address;
+magnachain.Address = Address;
 
 //var Script = require('./script');
 // address end----------------------------------------------------------------------
@@ -9062,7 +9076,7 @@ PrivateKey.prototype.inspect = function ()
 };
 
 //module.exports = PrivateKey;
-celllink.PrivateKey = PrivateKey;
+magnachain.PrivateKey = PrivateKey;
 // privatekey end----------------------------------------------------------------------
 
 // hdprivatekey begin----------------------------------------------------------------------
@@ -9800,7 +9814,7 @@ HDPrivateKey.ChecksumEnd = HDPrivateKey.ChecksumStart + HDPrivateKey.CheckSumSiz
 
 assert(HDPrivateKey.ChecksumEnd === HDPrivateKey.SerializedByteSize);
 
-celllink.HDPrivateKey = HDPrivateKey;
+magnachain.HDPrivateKey = HDPrivateKey;
 // hdprivatekey end----------------------------------------------------------------------
 
 // hdpublickey begin----------------------------------------------------------------------
@@ -10359,7 +10373,7 @@ HDPublicKey.ChecksumEnd = HDPublicKey.ChecksumStart + HDPublicKey.CheckSumSize;
 assert(HDPublicKey.PublicKeyEnd === HDPublicKey.DataSize);
 assert(HDPublicKey.ChecksumEnd === HDPublicKey.SerializedByteSize);
 
-celllink.HDPublicKey = HDPublicKey;
+magnachain.HDPublicKey = HDPublicKey;
 // hdpublickey end----------------------------------------------------------------------
 
 // script/script begin----------------------------------------------------------------------
@@ -10869,7 +10883,7 @@ Script.prototype.isContractOut = function ()
 {
     if (this.chunks.length === 2)
     {
-        if ((this.chunks[0].opcodenum === Opcode.OP_PUB_CONTRACT || this.chunks[0].opcodenum === Opcode.OP_TRANS_CONTRACT)
+        if ((this.chunks[0].opcodenum === Opcode.OP_CONTRACT || this.chunks[0].opcodenum === Opcode.OP_CONTRACT_CHANGE)
             && this.chunks[1].buf && this.chunks[1].buf.length === 20)
         {
             return true;
@@ -11705,7 +11719,7 @@ Script.prototype.getSignatureOperationsCount = function (accurate)
     return n;
 };
 
-celllink.Script = Script;
+magnachain.Script = Script;
 // script/script end----------------------------------------------------------------------
 
 // script/interpreter begin----------------------------------------------------------------------
@@ -11882,7 +11896,7 @@ Interpreter.prototype.verify = function (scriptSig, scriptPubkey, tx, nin, flags
     return true;
 };
 
-celllink.Interpreter = Interpreter;
+magnachain.Interpreter = Interpreter;
 
 Interpreter.prototype.initialize = function (obj)
 {
@@ -13101,8 +13115,8 @@ Interpreter.prototype.step = function ()
                     }
                 }
                 break;
-            case Opcode.OP_PUB_CONTRACT:
-            case Opcode.OP_TRANS_CONTRACT:
+            case Opcode.OP_CONTRACT:
+            case Opcode.OP_CONTRACT_CHANGE:
                 {
                     // do nothing
                 }
@@ -13222,7 +13236,7 @@ UnspentOutput.prototype.toObject = UnspentOutput.prototype.toJSON = function toO
         amount: Unit.fromSatoshis(this.satoshis).toBTC()
     };
 };
-celllink.UnspentOutput = UnspentOutput;
+magnachain.UnspentOutput = UnspentOutput;
 // transaction/unspentoutput end----------------------------------------------------------------------
 
 // transaction/signature begin----------------------------------------------------------------------
@@ -13320,7 +13334,7 @@ TransactionSignature.fromObject = function (object)
     return new TransactionSignature(object);
 };
 
-celllink.TransactionSignature = TransactionSignature;
+magnachain.TransactionSignature = TransactionSignature;
 // transaction/signature end----------------------------------------------------------------------
 
 // transaction/output begin----------------------------------------------------------------------
@@ -13529,7 +13543,7 @@ Output.prototype.toBufferWriter = function (writer)
     return writer;
 };
 
-celllink.Output = Output;
+magnachain.Output = Output;
 // transaction/output end----------------------------------------------------------------------
 
 // transaction/sighash begin----------------------------------------------------------------------
@@ -13681,7 +13695,7 @@ Sighash.sighash = sighash;
 Sighash.sign = sign;
 Sighash.verify = verify;
 
-celllink.Sighash = Sighash;
+magnachain.Sighash = Sighash;
 // module.exports = {
 //     sighash: sighash,
 //     sign: sign,
@@ -13923,7 +13937,7 @@ Input.prototype._estimateSize = function ()
     return this.toBufferWriter().toBuffer().length;
 };
 
-celllink.Input = Input;
+magnachain.Input = Input;
 // transaction/input/input end----------------------------------------------------------------------
 
 // transaction/input/multisig begin----------------------------------------------------------------------
@@ -14165,7 +14179,7 @@ MultiSigInput.prototype._estimateSize = function ()
         this.threshold * MultiSigInput.SIGNATURE_SIZE;
 };
 
-celllink.MultiSigInput = MultiSigInput;
+magnachain.MultiSigInput = MultiSigInput;
 // transaction/input/multisig end----------------------------------------------------------------------
 
 // transaction/input/multisigscripthash begin----------------------------------------------------------------------
@@ -14357,7 +14371,7 @@ MultiSigScriptHashInput.prototype._estimateSize = function ()
         this.publicKeys.length * MultiSigScriptHashInput.PUBKEY_SIZE;
 };
 
-celllink.MultiSigScriptHashInput = MultiSigScriptHashInput;
+magnachain.MultiSigScriptHashInput = MultiSigScriptHashInput;
 // transaction/input/multisigscripthash end----------------------------------------------------------------------
 
 // transaction/input/publickey begin----------------------------------------------------------------------
@@ -14454,7 +14468,7 @@ PublicKeyInput.prototype._estimateSize = function ()
     return PublicKeyInput.SCRIPT_MAX_SIZE;
 };
 
-celllink.PublicKeyInput = PublicKeyInput;
+magnachain.PublicKeyInput = PublicKeyInput;
 // transaction/input/publickey end----------------------------------------------------------------------
 
 // transaction/input/publickeyhash begin----------------------------------------------------------------------
@@ -14557,7 +14571,7 @@ PublicKeyHashInput.prototype._estimateSize = function ()
     return PublicKeyHashInput.SCRIPT_MAX_SIZE;
 };
 
-celllink.PublicKeyHashInput = PublicKeyHashInput;
+magnachain.PublicKeyHashInput = PublicKeyHashInput;
 // transaction/input/publickeyhash end----------------------------------------------------------------------
 
 function ContactInput()
@@ -14588,7 +14602,12 @@ ContactInput.prototype._estimateSize = function ()
 {
     return ContactInput.SCRIPT_MAX_SIZE;
 };
-celllink.ContactInput = ContactInput;
+magnachain.ContactInput = ContactInput;
+
+
+//------------------------------------------
+//ContractData
+
 
 // transaction/transaction begin----------------------------------------------------------------------
 // var _ = require('lodash');
@@ -14982,95 +15001,32 @@ Transaction.prototype.toBufferWriterForSign = function (writer)
 
 Transaction.prototype.WriteExtra = function (bw, sign)
 {
-    if (this.version == PUBLISH_CONTRACT_VERSION)
+    if (this.version == PUBLISH_CONTRACT_VERSION || this.version == CALL_CONTRACT_VERSION)
     {
-        //console.log("PUBLISH_CONTRACT_VERSION");
-        //console.log(this.contractAdd);
-        //console.log(this.contractCode);
+        bw.write(this.contractdata.address);
+        this.contractdata.sender.WriteForCl(bw);
+        
+        bw.writeVarintNum(this.contractdata.codeOrFunc.length);
+        bw.write(this.contractdata.codeOrFunc);
 
-        bw.write(this.contractAdd);
-        //console.log("IIII: " + this.contractCode);
-        if ( this.contractCode == null )
-        {
-            console.error("contractCode is null！");
-            return;
-        }
-        bw.write(this.contractCode);
-        this.contractSender.WriteForCl(bw);
+        bw.writeVarintNum(this.contractdata.args.length);
+        bw.write(this.contractdata.args);
+
+        bw.writeUInt64LEBN(this.contractdata.amountOut);
         if (!sign)
         {
-            //bw.write(this.scontractScriptSig.toBuffer());
             var scriptBuf;
-            if (this.scontractScriptSig == null)
+            if (this.contractdata.signature == null)
             {
                 scriptBuf = Script.empty().toBuffer();
-            }
-            else
+            } else
             {
-                scriptBuf = this.scontractScriptSig.toBuffer();
+                scriptBuf = this.contractdata.signature.toBuffer();
             }
             bw.writeVarintNum(scriptBuf.length);
             bw.write(scriptBuf);
         }
-        bw.writeUInt32LE(this.contractCallId);
     }
-    else if (this.version == CALL_CONTRACT_VERSION)
-    {
-        //console.log("CALL_CONTRACT_VERSION");  
-        //console.trace(); 
-
-        //console.log(this.contractAdd);
-        //console.log(this.contractFun);
-        //console.log(this.contractParams);       
-
-        bw.write(this.contractAdd);        
-        this.contractSender.WriteForCl(bw);
-        var bufFun = Buffer._fromString(this.contractFun);
-        bw.writeVarintNum(bufFun.length);        
-        bw.write(bufFun);        
-        var bufParams = Buffer._fromString(this.contractParams);
-        bw.writeVarintNum(bufParams.length);
-        bw.write(bufParams);
-
-        if (!sign)
-        {
-            //bw.write(this.scontractScriptSig.toBuffer());
-            //console.log(this.scontractScriptSig);
-            var scriptBuf;
-            if (this.scontractScriptSig == null)
-            {
-                scriptBuf = Script.empty().toBuffer();
-            }
-            else
-            {
-                scriptBuf = this.scontractScriptSig.toBuffer();
-            }
-            bw.writeVarintNum(scriptBuf.length);
-            //console.log("LLLLL: " + scriptBuf.length);
-            if ( scriptBuf.length > 0 )
-            {
-                bw.write(scriptBuf);
-            }            
-        }
-        bw.writeUInt32LE(this.contractCallId);
-    }
-    // else if (Version == (uint)TransactionVer.CREATE_BRANCH_VERSION)
-    //         {
-    //             stream.ReadWrite(ref branchVSeeds);
-    //             stream.ReadWrite(ref branchSeedSpec6);
-    //             stream.ReadWrite(ref sendToTxHexData);
-    //         }
-    //         else if (Version == (uint)TransactionVer.TRANS_BRANCH_VERSION_S1)
-    //         {
-    //             stream.ReadWrite(ref sendToBranchid);
-    //             stream.ReadWrite(ref sendToTxHexData);
-    //         }
-    //         else if (Version == (uint)TransactionVer.TRANS_BRANCH_VERSION_S2)
-    //         {
-    //             stream.ReadWrite(ref fromBranchId);
-    //             stream.ReadWrite(ref fromTxid);
-    //             stream.ReadWrite(ref inAmount);
-    //         }
 };
 
 Transaction.prototype.fromBuffer = function (buffer)
@@ -15105,53 +15061,23 @@ Transaction.prototype.fromBufferReader = function (reader)
 
 Transaction.prototype.ReadExtra = function (br)
 {
-    if (this.version == PUBLISH_CONTRACT_VERSION)
+    if (this.version == PUBLISH_CONTRACT_VERSION || this.version == CALL_CONTRACT_VERSION)
     {
-        this.contractAdd = br.read(20);
-        this.contractSender = PublicKey.ReadForCl(br);
+        this.contractdata = {} // TODO: make a class for contractdata???
 
-        if (!sign)
+        this.contractdata.address = br.read(20);//this is a KeyId type in C++, 
+        this.contractdata.sender = PublicKey.ReadForCl(br);
+
+        this.contractdata.codeOrFunc = br.readVarLengthBuffer();
+        this.contractdata.args = br.readVarLengthBuffer();
+
+        this.contractdata.amountOut = br.readUInt64LEBN();
+        if(!sign)
         {
             var scriptBuffer = br.readVarLengthBuffer();
-            this.scontractScriptSig = Script.fromBuffer(scriptBuffer);
+            this.contractdata.signature = Script.fromBuffer(scriptBuffer);
         }
-        this.contractCallId = br.readUInt32LE();
     }
-    else if (this.version == CALL_CONTRACT_VERSION)
-    {
-        this.contractAdd = br.read(20);
-        this.contractSender = PublicKey.ReadForCl(br);
-
-        var bufFun = br.readVarLengthBuffer();
-        this.contractFun = bufFun.toString();
-
-        var bufParams = br.readVarLengthBuffer();
-        this.contractParams = bufParams.toString();
-
-        if (!sign)
-        {
-            var scriptBuffer = br.readVarLengthBuffer();
-            this.scontractScriptSig = Script.fromBuffer(scriptBuffer);
-        }
-        this.contractCallId = br.readUInt32LE();
-    }
-    // else if (Version == (uint)TransactionVer.CREATE_BRANCH_VERSION)
-    //         {
-    //             stream.ReadWrite(ref branchVSeeds);
-    //             stream.ReadWrite(ref branchSeedSpec6);
-    //             stream.ReadWrite(ref sendToTxHexData);
-    //         }
-    //         else if (Version == (uint)TransactionVer.TRANS_BRANCH_VERSION_S1)
-    //         {
-    //             stream.ReadWrite(ref sendToBranchid);
-    //             stream.ReadWrite(ref sendToTxHexData);
-    //         }
-    //         else if (Version == (uint)TransactionVer.TRANS_BRANCH_VERSION_S2)
-    //         {
-    //             stream.ReadWrite(ref fromBranchId);
-    //             stream.ReadWrite(ref fromTxid);
-    //             stream.ReadWrite(ref inAmount);
-    //         }
 }
 
 Transaction.prototype.toObject = Transaction.prototype.toJSON = function toObject()
@@ -15477,7 +15403,7 @@ Transaction.prototype.setOutputs = function(outputs)
             this.inputs[i] = new PublicKeyInput(this.inputs[i]);
         }
         //if (scriptbuf.length == 22 &&
-        //    (scriptbuf[0] == Opcode.map.OP_PUB_CONTRACT || scriptbuf[0] == Opcode.map.OP_TRANS_CONTRACT))
+        //    (scriptbuf[0] == Opcode.map.OP_CONTRACT || scriptbuf[0] == Opcode.map.OP_CONTRACT_CHANGE))
         if (output.script.isContractOut())
         {
             this.inputs[i] = new ContactInput(this.inputs[i]);
@@ -16139,13 +16065,13 @@ Transaction.prototype.sign = function (privateKey, sigtype)
 
 Transaction.prototype.signSmartContract = function(privateKey, sigtype)
 {
-    if (this.IsSmartContract() && this.contractSender != null)
+    if (this.IsSmartContract() && this.contractdata.sender != null)
     {
         var hashSign = Script.SignatureHashForContract(this);        
         var privKey = new PrivateKey(privateKey);
 
         sigtype = sigtype || Signature.SIGHASH_ALL;
-        if (privKey.publicKey.toString() === this.contractSender.toString())
+        if (privKey.publicKey.toString() === this.contractdata.sender.toString())
         {
             var sig = ECDSA.sign(hashSign, privKey, 'little').set({
                 nhashtype: sigtype
@@ -16157,7 +16083,7 @@ Transaction.prototype.signSmartContract = function(privateKey, sigtype)
                  sig.toBuffer(),
                  BufferUtil.integerAsSingleByteBuffer(sigtype || Signature.SIGHASH_ALL)
              ]));
-            this.scontractScriptSig = script;//new Script(sig);
+            this.contractdata.signature = script;//new Script(sig);
         }
     }
 }
@@ -16358,24 +16284,5 @@ Transaction.prototype.enableRBF = function ()
     return this;
 };
 
-// celllink 修改加入的功能
-// KeyId contractAddr;// contract address       // 5 个 uint, 20 bytes
-// byte[] contractCode;
-// PubKey contractSender;// sender pub addr
-// string contractFun;
-// string contractParams;
-// Script scontractScriptSig = Script.Empty;
-// UInt32 contractCallId;
-Transaction.prototype.SetExtraData = function (contractAddr, contractCode, contractSender, contractFun, contractParams, scontractScriptSig, contractCallId)
-{
-    this.contractAddr = contractAddr;
-    this.contractCode = contractCode;
-    this.contractSender = contractSender;
-    this.contractFun = contractFun;
-    this.contractParams = contractParams;
-    this.scontractScriptSig = scontractScriptSig;
-    this.contractCallId = contractCallId;
-};
-
-celllink.Transaction = Transaction;
+magnachain.Transaction = Transaction;
 // transaction/transaction end----------------------------------------------------------------------

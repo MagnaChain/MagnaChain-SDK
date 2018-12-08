@@ -1,4 +1,4 @@
-'use strict';var celllink={};var docsURL='http://matgz.com/';var errors={};var _xerrorData=[{name:'InvalidB58Char',message:'Invalid Base58 character: {0} in {1}'},{name:'InvalidB58Checksum',message:'Invalid Base58 checksum for {0}'},{name:'InvalidNetwork',message:'Invalid version for network: got {0}'},{name:'InvalidState',message:'Invalid state: {0}'},{name:'NotImplemented',message:'Function {0} was not implemented yet'},{name:'InvalidNetworkArgument',message:'Invalid network: must be "livenet" or "testnet", got {0}'},{name:'InvalidArgument',message:function()
+'use strict';var magnachain={};var docsURL='http://matgz.com/';var errors={};var _xerrorData=[{name:'InvalidB58Char',message:'Invalid Base58 character: {0} in {1}'},{name:'InvalidB58Checksum',message:'Invalid Base58 checksum for {0}'},{name:'InvalidNetwork',message:'Invalid version for network: got {0}'},{name:'InvalidState',message:'Invalid state: {0}'},{name:'NotImplemented',message:'Function {0} was not implemented yet'},{name:'InvalidNetworkArgument',message:'Invalid network: must be "livenet" or "testnet", got {0}'},{name:'InvalidArgument',message:function()
 {return'Invalid Argument'+(arguments[0]?(': '+arguments[0]):'')+
 (arguments[1]?(' Documentation: '+docsURL+arguments[1]):'');}},{name:'AbstractMethodInvoked',message:'Abstract Method Invocation: {0}'},{name:'InvalidArgumentType',message:function()
 {return'Invalid Argument for '+arguments[2]+', expected '+arguments[1]+' but got '+typeof arguments[0];}},{name:'Unit',message:'Internal Error on Unit {0}',errors:[{'name':'UnknownCode','message':'Unrecognized unit code: {0}'},{'name':'InvalidRate','message':'Invalid exchange rate: {0}'}]},{name:'MerkleBlock',message:'Internal Error on MerkleBlock {0}',errors:[{'name':'InvalidMerkleTree','message':'This MerkleBlock contain an invalid Merkle Tree'}]},{name:'Transaction',message:'Internal Error on Transaction {0}',errors:[{name:'Input',message:'Internal Error on Input {0}',errors:[{name:'MissingScript',message:'Need a script to create an input'},{name:'UnsupportedScript',message:'Unsupported input script type: {0}'},{name:'MissingPreviousOutput',message:'No previous output information.'}]},{name:'NeedMoreInfo',message:'{0}'},{name:'InvalidSorting',message:'The sorting function provided did not return the change output as one of the array elements'},{name:'InvalidOutputAmountSum',message:'{0}'},{name:'MissingSignatures',message:'Some inputs have not been fully signed'},{name:'InvalidIndex',message:'Invalid index: {0} is not between 0, {1}'},{name:'UnableToVerifySignature',message:'Unable to verify signature: {0}'},{name:'DustOutputs',message:'Dust amount detected in one output'},{name:'InvalidSatoshis',message:'Output satoshis are invalid',},{name:'FeeError',message:'Internal Error on Fee {0}',errors:[{name:'TooSmall',message:'Fee is too small: {0}',},{name:'TooLarge',message:'Fee is too large: {0}',},{name:'Different',message:'Unspent value is different from specified fee: {0}',}]},{name:'ChangeAddressMissing',message:'Change address is missing'},{name:'BlockHeightTooHigh',message:'Block Height can be at most 2^32 -1'},{name:'NLockTimeOutOfRange',message:'Block Height can only be between 0 and 499 999 999'},{name:'LockTimeTooEarly',message:'Lock Time can\'t be earlier than UNIX date 500 000 000'}]},{name:'Script',message:'Internal Error on Script {0}',errors:[{name:'UnrecognizedAddress',message:'Expected argument {0} to be an address'},{name:'CantDeriveAddress',message:'Can\'t derive address associated with script {0}, needs to be p2pkh in, p2pkh out, p2sh in, or p2sh out.'},{name:'InvalidBuffer',message:'Invalid script buffer: can\'t parse valid script from given buffer {0}'}]},{name:'HDPrivateKey',message:'Internal Error on HDPrivateKey {0}',errors:[{name:'InvalidDerivationArgument',message:'Invalid derivation argument {0}, expected string, or number and boolean'},{name:'InvalidEntropyArgument',message:'Invalid entropy: must be an hexa string or binary buffer, got {0}',errors:[{name:'TooMuchEntropy',message:'Invalid entropy: more than 512 bits is non standard, got "{0}"'},{name:'NotEnoughEntropy',message:'Invalid entropy: at least 128 bits needed, got "{0}"'}]},{name:'InvalidLength',message:'Invalid length for xprivkey string in {0}'},{name:'InvalidPath',message:'Invalid derivation path: {0}'},{name:'UnrecognizedArgument',message:'Invalid argument: creating a HDPrivateKey requires a string, buffer, json or object, got "{0}"'}]},{name:'HDPublicKey',message:'Internal Error on HDPublicKey {0}',errors:[{name:'ArgumentIsPrivateExtended',message:'Argument is an extended private key: {0}'},{name:'InvalidDerivationArgument',message:'Invalid derivation argument: got {0}'},{name:'InvalidLength',message:'Invalid length for xpubkey: got "{0}"'},{name:'InvalidPath',message:'Invalid derivation path, it should look like: "m/1/100", got "{0}"'},{name:'InvalidIndexCantDeriveHardened',message:'Invalid argument: creating a hardened path requires an HDPrivateKey'},{name:'MustSupplyArgument',message:'Must supply an argument to create a HDPublicKey'},{name:'UnrecognizedArgument',message:'Invalid argument for creation, must be string, json, buffer, or object'}]}];function format(message,args)
@@ -14,9 +14,9 @@ this.stack=this.message+'\n'+(new Error()).stack;};NodeError.prototype=Object.cr
 return NodeError;};var childDefinitions=function(parent,childDefinitions)
 {_.each(childDefinitions,function(childDefinition)
 {traverseNode(parent,childDefinition);});};var traverseRoot=function(parent,errorsDefinition)
-{childDefinitions(parent,errorsDefinition);return parent;};celllink.Error=function()
-{this.message='Internal error';this.stack=this.message+'\n'+(new Error()).stack;};celllink.Error.prototype=Object.create(Error.prototype);celllink.Error.prototype.name='bitcore.Error';traverseRoot(celllink.Error,_xerrorData);errors=celllink.Error;errors.extend=function(spec)
-{return traverseNode(celllink.Error,spec);};var JSUtil={};var isHexa=function isHexa(value)
+{childDefinitions(parent,errorsDefinition);return parent;};magnachain.Error=function()
+{this.message='Internal error';this.stack=this.message+'\n'+(new Error()).stack;};magnachain.Error.prototype=Object.create(Error.prototype);magnachain.Error.prototype.name='bitcore.Error';traverseRoot(magnachain.Error,_xerrorData);errors=magnachain.Error;errors.extend=function(spec)
+{return traverseNode(magnachain.Error,spec);};var JSUtil={};var isHexa=function isHexa(value)
 {if(!_.isString(value))
 {return false;}
 return/^[0-9a-fA-F]+$/.test(value);};var isValidJSON=function isValidJSON(arg)
@@ -32,7 +32,7 @@ return false;};JSUtil.isValidJSON=isValidJSON;JSUtil.isHexa=isHexa;JSUtil.isHexa
 {Object.keys(values).forEach(function(key)
 {Object.defineProperty(target,key,{configurable:false,enumerable:true,value:values[key]});});return target;};JSUtil.defineImmutable=defineImmutable;var isNaturalNumber=function(value)
 {return typeof value==='number'&&isFinite(value)&&Math.floor(value)===value&&value>=0;}
-JSUtil.isNaturalNumber=isNaturalNumber;celllink.JSUtil=JSUtil;var $={};var checkState=function(condition,message)
+JSUtil.isNaturalNumber=isNaturalNumber;magnachain.JSUtil=JSUtil;var $={};var checkState=function(condition,message)
 {if(!condition)
 {throw new errors.InvalidState(message);}}
 $.checkState=checkState;var checkArgument=function(condition,argumentName,message,docsPath)
@@ -46,7 +46,7 @@ $.checkArgument=checkArgument;var checkArgumentType=function(argument,type,argum
 {throw new errors.InvalidArgumentType(argument,type,argumentName);}}else
 {if(!(argument instanceof type))
 {throw new errors.InvalidArgumentType(argument,type.name,argumentName);}}}
-$.checkArgumentType=checkArgumentType;celllink.$=$;var BufferUtil={}
+$.checkArgumentType=checkArgumentType;magnachain.$=$;var BufferUtil={}
 function equals(a,b)
 {if(a.length!==b.length)
 {return false;}
@@ -82,7 +82,7 @@ BufferUtil.bufferToHex=bufferToHex;var reverse=function reverse(param)
 return ret;}
 BufferUtil.reverse=reverse;var hexToBuffer=function hexToBuffer(string)
 {ix_base.assert(js.isHexa(string));return new Buffer(string,'hex');}
-BufferUtil.hexToBuffer=hexToBuffer;BufferUtil.NULL_HASH=fill(new Buffer(32),0);BufferUtil.EMPTY_BUFFER=new Buffer(0);celllink.BufferUtil=BufferUtil;function Opcode(num)
+BufferUtil.hexToBuffer=hexToBuffer;BufferUtil.NULL_HASH=fill(new Buffer(32),0);BufferUtil.EMPTY_BUFFER=new Buffer(0);magnachain.BufferUtil=BufferUtil;function Opcode(num)
 {if(!(this instanceof Opcode))
 {return new Opcode(num);}
 var value;if(_.isNumber(num))
@@ -104,13 +104,13 @@ return new Opcode(value);};Opcode.prototype.toHex=function()
 return str;};Opcode.smallInt=function(n)
 {$.checkArgument(_.isNumber(n),'Invalid Argument: n should be number');$.checkArgument(n>=0&&n<=16,'Invalid Argument: n must be between 0 and 16');if(n===0)
 {return Opcode('OP_0');}
-return new Opcode(Opcode.map.OP_1+n-1);};Opcode.map={OP_FALSE:0,OP_0:0,OP_PUSHDATA1:76,OP_PUSHDATA2:77,OP_PUSHDATA4:78,OP_1NEGATE:79,OP_RESERVED:80,OP_TRUE:81,OP_1:81,OP_2:82,OP_3:83,OP_4:84,OP_5:85,OP_6:86,OP_7:87,OP_8:88,OP_9:89,OP_10:90,OP_11:91,OP_12:92,OP_13:93,OP_14:94,OP_15:95,OP_16:96,OP_NOP:97,OP_VER:98,OP_IF:99,OP_NOTIF:100,OP_VERIF:101,OP_VERNOTIF:102,OP_ELSE:103,OP_ENDIF:104,OP_VERIFY:105,OP_RETURN:106,OP_TOALTSTACK:107,OP_FROMALTSTACK:108,OP_2DROP:109,OP_2DUP:110,OP_3DUP:111,OP_2OVER:112,OP_2ROT:113,OP_2SWAP:114,OP_IFDUP:115,OP_DEPTH:116,OP_DROP:117,OP_DUP:118,OP_NIP:119,OP_OVER:120,OP_PICK:121,OP_ROLL:122,OP_ROT:123,OP_SWAP:124,OP_TUCK:125,OP_CAT:126,OP_SUBSTR:127,OP_LEFT:128,OP_RIGHT:129,OP_SIZE:130,OP_INVERT:131,OP_AND:132,OP_OR:133,OP_XOR:134,OP_EQUAL:135,OP_EQUALVERIFY:136,OP_RESERVED1:137,OP_RESERVED2:138,OP_1ADD:139,OP_1SUB:140,OP_2MUL:141,OP_2DIV:142,OP_NEGATE:143,OP_ABS:144,OP_NOT:145,OP_0NOTEQUAL:146,OP_ADD:147,OP_SUB:148,OP_MUL:149,OP_DIV:150,OP_MOD:151,OP_LSHIFT:152,OP_RSHIFT:153,OP_BOOLAND:154,OP_BOOLOR:155,OP_NUMEQUAL:156,OP_NUMEQUALVERIFY:157,OP_NUMNOTEQUAL:158,OP_LESSTHAN:159,OP_GREATERTHAN:160,OP_LESSTHANOREQUAL:161,OP_GREATERTHANOREQUAL:162,OP_MIN:163,OP_MAX:164,OP_WITHIN:165,OP_RIPEMD160:166,OP_SHA1:167,OP_SHA256:168,OP_HASH160:169,OP_HASH256:170,OP_CODESEPARATOR:171,OP_CHECKSIG:172,OP_CHECKSIGVERIFY:173,OP_CHECKMULTISIG:174,OP_CHECKMULTISIGVERIFY:175,OP_CHECKLOCKTIMEVERIFY:177,OP_NOP1:176,OP_NOP2:177,OP_NOP3:178,OP_NOP4:179,OP_NOP5:180,OP_NOP6:181,OP_NOP7:182,OP_NOP8:183,OP_NOP9:184,OP_NOP10:185,OP_PUB_CONTRACT:192,OP_TRANS_CONTRACT:193,OP_CREATE_BRANCH:208,OP_TRANS_BRANCH:209,OP_PUBKEYHASH:253,OP_PUBKEY:254,OP_INVALIDOPCODE:255};Opcode.reverseMap=[];for(var k in Opcode.map)
+return new Opcode(Opcode.map.OP_1+n-1);};Opcode.map={OP_FALSE:0,OP_0:0,OP_PUSHDATA1:76,OP_PUSHDATA2:77,OP_PUSHDATA4:78,OP_1NEGATE:79,OP_RESERVED:80,OP_TRUE:81,OP_1:81,OP_2:82,OP_3:83,OP_4:84,OP_5:85,OP_6:86,OP_7:87,OP_8:88,OP_9:89,OP_10:90,OP_11:91,OP_12:92,OP_13:93,OP_14:94,OP_15:95,OP_16:96,OP_NOP:97,OP_VER:98,OP_IF:99,OP_NOTIF:100,OP_VERIF:101,OP_VERNOTIF:102,OP_ELSE:103,OP_ENDIF:104,OP_VERIFY:105,OP_RETURN:106,OP_TOALTSTACK:107,OP_FROMALTSTACK:108,OP_2DROP:109,OP_2DUP:110,OP_3DUP:111,OP_2OVER:112,OP_2ROT:113,OP_2SWAP:114,OP_IFDUP:115,OP_DEPTH:116,OP_DROP:117,OP_DUP:118,OP_NIP:119,OP_OVER:120,OP_PICK:121,OP_ROLL:122,OP_ROT:123,OP_SWAP:124,OP_TUCK:125,OP_CAT:126,OP_SUBSTR:127,OP_LEFT:128,OP_RIGHT:129,OP_SIZE:130,OP_INVERT:131,OP_AND:132,OP_OR:133,OP_XOR:134,OP_EQUAL:135,OP_EQUALVERIFY:136,OP_RESERVED1:137,OP_RESERVED2:138,OP_1ADD:139,OP_1SUB:140,OP_2MUL:141,OP_2DIV:142,OP_NEGATE:143,OP_ABS:144,OP_NOT:145,OP_0NOTEQUAL:146,OP_ADD:147,OP_SUB:148,OP_MUL:149,OP_DIV:150,OP_MOD:151,OP_LSHIFT:152,OP_RSHIFT:153,OP_BOOLAND:154,OP_BOOLOR:155,OP_NUMEQUAL:156,OP_NUMEQUALVERIFY:157,OP_NUMNOTEQUAL:158,OP_LESSTHAN:159,OP_GREATERTHAN:160,OP_LESSTHANOREQUAL:161,OP_GREATERTHANOREQUAL:162,OP_MIN:163,OP_MAX:164,OP_WITHIN:165,OP_RIPEMD160:166,OP_SHA1:167,OP_SHA256:168,OP_HASH160:169,OP_HASH256:170,OP_CODESEPARATOR:171,OP_CHECKSIG:172,OP_CHECKSIGVERIFY:173,OP_CHECKMULTISIG:174,OP_CHECKMULTISIGVERIFY:175,OP_CHECKLOCKTIMEVERIFY:177,OP_NOP1:176,OP_NOP2:177,OP_NOP3:178,OP_NOP4:179,OP_NOP5:180,OP_NOP6:181,OP_NOP7:182,OP_NOP8:183,OP_NOP9:184,OP_NOP10:185,OP_CONTRACT_ADDR:192,OP_CONTRACT:193,OP_CONTRACT_CHANGE:194,OP_CREATE_BRANCH:208,OP_TRANS_BRANCH:209,OP_PUBKEYHASH:253,OP_PUBKEY:254,OP_INVALIDOPCODE:255};Opcode.reverseMap=[];for(var k in Opcode.map)
 {Opcode.reverseMap[Opcode.map[k]]=k;}
 _.extend(Opcode,Opcode.map);Opcode.isSmallIntOp=function(opcode)
 {if(opcode instanceof Opcode)
 {opcode=opcode.toNumber();}
 return((opcode===Opcode.map.OP_0)||((opcode>=Opcode.map.OP_1)&&(opcode<=Opcode.map.OP_16)));};Opcode.prototype.inspect=function()
-{return'<Opcode: '+this.toString()+', hex: '+this.toHex()+', decimal: '+this.num+'>';};celllink.Opcode=Opcode;var reversebuf=function(buf)
+{return'<Opcode: '+this.toString()+', hex: '+this.toHex()+', decimal: '+this.num+'>';};magnachain.Opcode=Opcode;var reversebuf=function(buf)
 {var buf2=new Buffer(buf.length);for(var i=0;i<buf.length;i++)
 {buf2[i]=buf[buf.length-1-i];}
 return buf2;};BN.Zero=new BN(0);BN.One=new BN(1);BN.Minus1=new BN(-1);BN.fromNumber=function(n)
@@ -165,7 +165,7 @@ return BN.fromSM(buf,{endian:'little'});};BN.prototype.toScriptNumBuffer=functio
 {rbuf[rbuf.length-1-i]=buf[buf.length-1-i];}
 for(i=0;i<size-natlen;i++)
 {rbuf[i]=0;}
-return rbuf;};celllink.BN=BN;function Random()
+return rbuf;};magnachain.BN=BN;function Random()
 {}
 Random.getRandomBuffer=function(size)
 {return Random.getRandomBufferBrowser(size);};Random.getRandomBufferNode=function(size)
@@ -179,7 +179,7 @@ throw new Error('window.crypto.getRandomValues not available');var bbuf=new Uint
 {var j=Math.floor(i/4);var k=i-j*4;if(k===0)
 {r=Math.random()*b32;b[i]=r&0xff;}else
 {b[i]=(r=r>>>8)&0xff;}}
-return b;};celllink.Random=Random;var Hash={}
+return b;};magnachain.Random=Random;var Hash={}
 Hash.sha1=function(buf)
 {$.checkArgument(BufferUtil.isBuffer(buf));var kS=ix_crypto.createHash('sha1');kS.update(buf,0);var arrR=kS.digest();return Buffer._fromArrayBuffer(arrR,0,arrR.length);};Hash.sha1.blocksize=512;Hash.sha256=function(buf)
 {$.checkArgument(BufferUtil.isBuffer(buf));var kS=ix_crypto.createHash('sha256');kS.update(buf,0);var arrR=kS.digest();return Buffer._fromArrayBuffer(arrR,0,arrR.length);};Hash.sha256.blocksize=512;Hash.sha256sha256=function(buf)
@@ -194,7 +194,7 @@ var o_key=new Buffer(blocksize);o_key.fill(0x5c);var i_key=new Buffer(blocksize)
 {o_key_pad[i]=o_key[i]^key[i];i_key_pad[i]=i_key[i]^key[i];}
 var p0=Buffer.concat([i_key_pad,data]);var p1=hashf(p0);var p2=Buffer.concat([o_key_pad,p1]);var pf=hashf(p2);return pf;};Hash.sha256hmac=function(data,key)
 {return Hash.hmac(Hash.sha256,data,key);};Hash.sha512hmac=function(data,key)
-{return Hash.hmac(Hash.sha512,data,key);};celllink.Hash=Hash;var Signature=function(r,s)
+{return Hash.hmac(Hash.sha512,data,key);};magnachain.Hash=Hash;var Signature=function(r,s)
 {if(!(this instanceof Signature))
 {return new Signature(r,s);}
 if(r instanceof BN)
@@ -254,7 +254,7 @@ return true;};Signature.prototype.hasDefinedHashtype=function()
 var temp=this.nhashtype&~Signature.SIGHASH_ANYONECANPAY;if(temp<Signature.SIGHASH_ALL||temp>Signature.SIGHASH_SINGLE)
 {return false;}
 return true;};Signature.prototype.toTxFormat=function()
-{var derbuf=this.toDER();var buf=new Buffer(1);buf.writeUInt8(this.nhashtype,0);return Buffer.concat([derbuf,buf]);};Signature.SIGHASH_ALL=0x01;Signature.SIGHASH_NONE=0x02;Signature.SIGHASH_SINGLE=0x03;Signature.SIGHASH_ANYONECANPAY=0x80;celllink.Signature=Signature;var elliptic_utils={};var minAssert=ix_base.asset;var minUtils=ix_base.minic_utils;elliptic_utils.assert=minAssert;elliptic_utils.toArray=minUtils.toArray;elliptic_utils.zero2=minUtils.zero2;elliptic_utils.toHex=minUtils.toHex;elliptic_utils.encode=minUtils.encode;function getNAF(num,w)
+{var derbuf=this.toDER();var buf=new Buffer(1);buf.writeUInt8(this.nhashtype,0);return Buffer.concat([derbuf,buf]);};Signature.SIGHASH_ALL=0x01;Signature.SIGHASH_NONE=0x02;Signature.SIGHASH_SINGLE=0x03;Signature.SIGHASH_ANYONECANPAY=0x80;magnachain.Signature=Signature;var elliptic_utils={};var minAssert=ix_base.asset;var minUtils=ix_base.minic_utils;elliptic_utils.assert=minAssert;elliptic_utils.toArray=minUtils.toArray;elliptic_utils.zero2=minUtils.zero2;elliptic_utils.toHex=minUtils.toHex;elliptic_utils.encode=minUtils.encode;function getNAF(num,w)
 {var naf=[];var ws=1<<(w+1);var k=num.clone();while(k.cmpn(1)>=0)
 {var z;if(k.isOdd())
 {var mod=k.andln(ws-1);if(mod>(ws>>1)-1)
@@ -289,7 +289,7 @@ elliptic_utils.cachedProperty=cachedProperty;function parseBytes(bytes)
 {return typeof bytes==='string'?elliptic_utils.toArray(bytes,'hex'):bytes;}
 elliptic_utils.parseBytes=parseBytes;function intFromLE(bytes)
 {return new BN(bytes,'hex','le');}
-elliptic_utils.intFromLE=intFromLE;celllink.elliptic_utils=elliptic_utils;var elliptic_curve={};var elliptic_utils=elliptic_utils;var getNAF=elliptic_utils.getNAF;var getJSF=elliptic_utils.getJSF;function BaseCurve(type,conf)
+elliptic_utils.intFromLE=intFromLE;magnachain.elliptic_utils=elliptic_utils;var elliptic_curve={};var elliptic_utils=elliptic_utils;var getNAF=elliptic_utils.getNAF;var getJSF=elliptic_utils.getJSF;function BaseCurve(type,conf)
 {this.type=type;this.p=new BN(conf.p,16);this.red=conf.prime?BN.red(conf.prime):BN.mont(this.p);this.zero=new BN(0).toRed(this.red);this.one=new BN(1).toRed(this.red);this.two=new BN(2).toRed(this.red);this.n=conf.n&&new BN(conf.n,16);this.g=conf.g&&this.pointFromJSON(conf.g,conf.gRed);this._wnafT1=new Array(4);this._wnafT2=new Array(4);this._wnafT3=new Array(4);this._wnafT4=new Array(4);var adjustCount=this.n&&this.p.div(this.n);if(!adjustCount||adjustCount.cmpn(100)>0)
 {this.redN=null;}else
 {this._maxwellTrick=true;this.redN=this.n.toRed(this.red);}}
@@ -836,7 +836,7 @@ return this;};Point.pointToCompressed=function pointToCompressed(point)
 {var xbuf=point.getX().toBuffer({size:32});var ybuf=point.getY().toBuffer({size:32});var prefix;var odd=ybuf[ybuf.length-1]%2;if(odd)
 {prefix=new Buffer([0x03]);}else
 {prefix=new Buffer([0x02]);}
-return BufferUtil.concat([prefix,xbuf]);};celllink.Point=Point;var networks=[];var networkMaps={};function Networks(){}
+return BufferUtil.concat([prefix,xbuf]);};magnachain.Point=Point;var networks=[];var networkMaps={};function Networks(){}
 Networks.prototype.toString=function toString()
 {return this.name;};function get(arg,keys)
 {if(~networks.indexOf(arg))
@@ -851,7 +851,7 @@ var containsArg=function(key)
 return undefined;}
 return networkMaps[arg];}
 function addNetwork(data)
-{var network=new Networks();JSUtil.defineImmutable(network,{name:data.name,alias:data.alias,pubkeyhash:data.pubkeyhash,privatekey:data.privatekey,scripthash:data.scripthash,xpubkey:data.xpubkey,xprivkey:data.xprivkey});if(data.networkMagic)
+{var network=new Networks();JSUtil.defineImmutable(network,{name:data.name,alias:data.alias,pubkeyhash:data.pubkeyhash,privatekey:data.privatekey,scripthash:data.scripthash,contracthash:data.contracthash,xpubkey:data.xpubkey,xprivkey:data.xprivkey});if(data.networkMagic)
 {JSUtil.defineImmutable(network,{networkMagic:BufferUtil.integerAsBuffer(data.networkMagic)});}
 if(data.port)
 {JSUtil.defineImmutable(network,{port:data.port});}
@@ -867,7 +867,7 @@ function removeNetwork(network)
 for(var key in networkMaps)
 {if(networkMaps[key]===network)
 {delete networkMaps[key];}}}
-addNetwork({name:'livenet',alias:'mainnet',pubkeyhash:0x4B,privatekey:0x80,scripthash:0x3e,xpubkey:0x0488b21e,xprivkey:0x0488ade4,networkMagic:0xf9beb4d9,port:8333,dnsSeeds:['seed.bitcoin.sipa.be','dnsseed.bluematt.me','dnsseed.bitcoin.dashjr.org','seed.bitcoinstats.com','seed.bitnodes.io','bitseed.xf2.org']});var livenet=get('livenet');addNetwork({name:'testnet',alias:'regtest',pubkeyhash:0x6f,privatekey:0xef,scripthash:0xc4,xpubkey:0x043587cf,xprivkey:0x04358394});var testnet=get('testnet');var TESTNET={PORT:18333,NETWORK_MAGIC:BufferUtil.integerAsBuffer(0x0b110907),DNS_SEEDS:['testnet-seed.bitcoin.petertodd.org','testnet-seed.bluematt.me','testnet-seed.alexykot.me','testnet-seed.bitcoin.schildbach.de']};for(var key in TESTNET)
+addNetwork({name:'livenet',alias:'mainnet',pubkeyhash:75,scripthash:62,contracthash:69,privatekey:0x80,xpubkey:0x0488b21e,xprivkey:0x0488ade4,networkMagic:0xf9beb4d9,port:8333,dnsSeeds:['seed.bitcoin.sipa.be','dnsseed.bluematt.me','dnsseed.bitcoin.dashjr.org','seed.bitcoinstats.com','seed.bitnodes.io','bitseed.xf2.org']});var livenet=get('livenet');addNetwork({name:'testnet',alias:'regtest',pubkeyhash:110,scripthash:195,contracthash:199,privatekey:0xef,xpubkey:0x043587cf,xprivkey:0x04358394});var testnet=get('testnet');var TESTNET={PORT:18333,NETWORK_MAGIC:BufferUtil.integerAsBuffer(0x0b110907),DNS_SEEDS:['testnet-seed.bitcoin.petertodd.org','testnet-seed.bluematt.me','testnet-seed.alexykot.me','testnet-seed.bitcoin.schildbach.de']};for(var key in TESTNET)
 {if(!_.isObject(TESTNET[key]))
 {networkMaps[TESTNET[key]]=testnet;}}
 var REGTEST={PORT:18444,NETWORK_MAGIC:BufferUtil.integerAsBuffer(0xfabfb5da),DNS_SEEDS:[]};for(var key in REGTEST)
@@ -886,7 +886,7 @@ Object.defineProperty(testnet,'port',{enumerable:true,configurable:false,get:fun
 {testnet.regtestEnabled=true;}
 function disableRegtest()
 {testnet.regtestEnabled=false;}
-Networks.add=addNetwork;Networks.remove=removeNetwork;Networks.defaultNetwork=livenet;Networks.livenet=livenet;Networks.mainnet=livenet;Networks.testnet=testnet;Networks.get=get;Networks.enableRegtest=enableRegtest;Networks.disableRegtest=disableRegtest;celllink.Networks=Networks;function PublicKey(data,extra)
+Networks.add=addNetwork;Networks.remove=removeNetwork;Networks.defaultNetwork=livenet;Networks.livenet=livenet;Networks.mainnet=livenet;Networks.testnet=testnet;Networks.get=get;Networks.enableRegtest=enableRegtest;Networks.disableRegtest=disableRegtest;magnachain.Networks=Networks;function PublicKey(data,extra)
 {if(!(this instanceof PublicKey))
 {return new PublicKey(data,extra);}
 $.checkArgument(data,'First argument is required, please include public key data.');if(data instanceof PublicKey)
@@ -938,7 +938,7 @@ return Buffer.concat([prefix,xbuf]);}};PublicKey.prototype.WriteForCl=function(w
 {return Address.fromPublicKey(this,network||this.network);};PublicKey.prototype.toString=function()
 {return this.toDER().toString('hex');};PublicKey.prototype.inspect=function()
 {return'<PublicKey: '+this.toString()+
-(this.compressed?'':', uncompressed')+'>';};celllink.PublicKey=PublicKey;var ECDSA=function ECDSA(obj)
+(this.compressed?'':', uncompressed')+'>';};magnachain.PublicKey=PublicKey;var ECDSA=function ECDSA(obj)
 {if(!(this instanceof ECDSA))
 {return new ECDSA(obj);}
 if(obj)
@@ -998,7 +998,7 @@ return JSON.stringify(obj);};ECDSA.prototype.verify=function()
 {this.verified=false;}
 return this;};ECDSA.sign=function(hashbuf,privkey,endian)
 {return ECDSA().set({hashbuf:hashbuf,endian:endian,privkey:privkey}).sign().sig;};ECDSA.verify=function(hashbuf,sig,pubkey,endian)
-{return ECDSA().set({hashbuf:hashbuf,endian:endian,sig:sig,pubkey:pubkey}).verify().verified;};celllink.ECDSA=ECDSA;var UNITS={'BTC':[1e8,8],'mBTC':[1e5,5],'uBTC':[1e2,2],'bits':[1e2,2],'satoshis':[1,0]};function Unit(amount,code)
+{return ECDSA().set({hashbuf:hashbuf,endian:endian,sig:sig,pubkey:pubkey}).verify().verified;};magnachain.ECDSA=ECDSA;var UNITS={'BTC':[1e8,8],'mBTC':[1e5,5],'uBTC':[1e2,2],'bits':[1e2,2],'satoshis':[1,0]};function Unit(amount,code)
 {if(!(this instanceof Unit))
 {return new Unit(amount,code);}
 if(_.isNumber(code))
@@ -1032,7 +1032,7 @@ var value=this._value/UNITS[code][0];return parseFloat(value.toFixed(UNITS[code]
 {return this.to(rate);};Unit.prototype.toString=function()
 {return this.satoshis+' satoshis';};Unit.prototype.toObject=Unit.prototype.toJSON=function toObject()
 {return{amount:this.BTC,code:Unit.BTC};};Unit.prototype.inspect=function()
-{return'<Unit: '+this.toString()+'>';};celllink.Unit=Unit;var safe_buffer=function()
+{return'<Unit: '+this.toString()+'>';};magnachain.Unit=Unit;var safe_buffer=function()
 {};function copyProps(src,dst)
 {for(var key in src)
 {dst[key]=src[key]}}
@@ -1132,7 +1132,7 @@ return new Buffer(bs58.decode(str));};Base58.prototype.fromBuffer=function(buf)
 {this.buf=buf;return this;};Base58.prototype.fromString=function(str)
 {var buf=Base58.decode(str);this.buf=buf;return this;};Base58.prototype.toBuffer=function()
 {return this.buf;};Base58.prototype.toString=function()
-{return Base58.encode(this.buf);};celllink.Base58=Base58;var sha256sha256=Hash.sha256sha256;var Base58Check=function Base58Check(obj)
+{return Base58.encode(this.buf);};magnachain.Base58=Base58;var sha256sha256=Hash.sha256sha256;var Base58Check=function Base58Check(obj)
 {if(!(this instanceof Base58Check))
 return new Base58Check(obj);if(Buffer.isBuffer(obj))
 {var buf=obj;this.fromBuffer(buf);}else if(typeof obj==='string')
@@ -1156,7 +1156,7 @@ throw new Error('Input must be a buffer');var checkedBuf=new Buffer(buf.length+4
 {this.buf=buf;return this;};Base58Check.prototype.fromString=function(str)
 {var buf=Base58Check.decode(str);this.buf=buf;return this;};Base58Check.prototype.toBuffer=function()
 {return this.buf;};Base58Check.prototype.toString=function()
-{return Base58Check.encode(this.buf);};celllink.Base58Check=Base58Check;var BufferReader=function BufferReader(buf)
+{return Base58Check.encode(this.buf);};magnachain.Base58Check=Base58Check;var BufferReader=function BufferReader(buf)
 {if(!(this instanceof BufferReader))
 {return new BufferReader(buf);}
 if(_.isUndefined(buf))
@@ -1196,7 +1196,7 @@ break;default:return first;}};BufferReader.prototype.readVarLengthBuffer=functio
 this.buf=buf;return this;};BufferReader.prototype.readReverse=function(len)
 {if(_.isUndefined(len))
 {len=this.buf.length;}
-var buf=this.buf.slice(this.pos,this.pos+len);this.pos=this.pos+len;return BufferUtil.reverse(buf);};celllink.BufferReader=BufferReader;var BufferWriter=function BufferWriter(obj)
+var buf=this.buf.slice(this.pos,this.pos+len);this.pos=this.pos+len;return BufferUtil.reverse(buf);};magnachain.BufferReader=BufferReader;var BufferWriter=function BufferWriter(obj)
 {if(!(this instanceof BufferWriter))
 return new BufferWriter(obj);if(obj)
 this.set(obj);else
@@ -1227,7 +1227,7 @@ return buf;};BufferWriter.varintBufBN=function(bn)
 {buf=new Buffer(1+2);buf.writeUInt8(253,0);buf.writeUInt16LE(n,1);}else if(n<0x100000000)
 {buf=new Buffer(1+4);buf.writeUInt8(254,0);buf.writeUInt32LE(n,1);}else
 {var bw=new BufferWriter();bw.writeUInt8(255);bw.writeUInt64LEBN(bn);var buf=bw.concat();}
-return buf;};celllink.BufferWriter=BufferWriter;var Varint=function Varint(buf)
+return buf;};magnachain.BufferWriter=BufferWriter;var Varint=function Varint(buf)
 {if(!(this instanceof Varint))
 return new Varint(buf);if(Buffer.isBuffer(buf))
 {this.buf=buf;}else if(typeof buf==='number')
@@ -1243,7 +1243,7 @@ return new Varint(buf);if(Buffer.isBuffer(buf))
 {this.buf=BufferWriter().writeVarintNum(num).concat();return this;};Varint.prototype.toBuffer=function()
 {return this.buf;};Varint.prototype.toBN=function()
 {return BufferReader(this.buf).readVarintBN();};Varint.prototype.toNumber=function()
-{return BufferReader(this.buf).readVarintNum();};celllink.Varint=Varint;function Address(data,network,type)
+{return BufferReader(this.buf).readVarintNum();};magnachain.Varint=Varint;function Address(data,network,type)
 {if(!(this instanceof Address))
 {return new Address(data,network,type);}
 if(_.isArray(data)&&_.isNumber(network))
@@ -1252,7 +1252,7 @@ if(data instanceof Address)
 {return data;}
 $.checkArgument(data,'First argument is required, please include address data.','guide/address.html');if(network&&!Networks.get(network))
 {throw new TypeError('Second argument must be "livenet" or "testnet".');}
-if(type&&(type!==Address.PayToPublicKeyHash&&type!==Address.PayToScriptHash))
+if(type&&(type!==Address.PayToPublicKeyHash&&type!==Address.PayToScriptHash&&type!==Address.PayToContractHash))
 {throw new TypeError('Third argument must be "pubkeyhash" or "scripthash".');}
 var info=this._classifyArguments(data,network,type);info.network=info.network||Networks.get(network)||Networks.defaultNetwork;info.type=info.type||type||Address.PayToPublicKeyHash;JSUtil.defineImmutable(this,{hashBuffer:info.hashBuffer,network:info.network,type:info.type});return this;}
 Address.prototype._classifyArguments=function(data,network,type)
@@ -1263,16 +1263,17 @@ Address.prototype._classifyArguments=function(data,network,type)
 {return Address._transformScript(data,network);}else if(typeof(data)==='string')
 {return Address._transformString(data,network,type);}else if(_.isObject(data))
 {return Address._transformObject(data);}else
-{throw new TypeError('First argument is an unrecognized data format.');}};Address.PayToPublicKeyHash='pubkeyhash';Address.PayToScriptHash='scripthash';Address._transformHash=function(hash)
+{throw new TypeError('First argument is an unrecognized data format.');}};Address.PayToPublicKeyHash='pubkeyhash';Address.PayToContractHash='contracthash';Address.PayToScriptHash='scripthash';Address._transformHash=function(hash)
 {var info={};if(!(hash instanceof Buffer)&&!(hash instanceof Uint8Array))
 {throw new TypeError('Address supplied is not a buffer.');}
 if(hash.length!==20)
 {throw new TypeError('Address hashbuffers must be exactly 20 bytes.');}
 info.hashBuffer=hash;return info;};Address._transformObject=function(data)
 {$.checkArgument(data.hash||data.hashBuffer,'Must provide a `hash` or `hashBuffer` property');$.checkArgument(data.type,'Must provide a `type` property');return{hashBuffer:data.hash?new Buffer(data.hash,'hex'):data.hashBuffer,network:Networks.get(data.network)||Networks.defaultNetwork,type:data.type};};Address._classifyFromVersion=function(buffer)
-{var version={};var pubkeyhashNetwork=Networks.get(buffer[0],'pubkeyhash');var scripthashNetwork=Networks.get(buffer[0],'scripthash');if(pubkeyhashNetwork)
+{var version={};var pubkeyhashNetwork=Networks.get(buffer[0],'pubkeyhash');var scripthashNetwork=Networks.get(buffer[0],'scripthash');var contracthashNetwork=Networks.get(buffer[0],'contracthash');;if(pubkeyhashNetwork)
 {version.network=pubkeyhashNetwork;version.type=Address.PayToPublicKeyHash;}else if(scripthashNetwork)
-{version.network=scripthashNetwork;version.type=Address.PayToScriptHash;}
+{version.network=scripthashNetwork;version.type=Address.PayToScriptHash;}else if(contracthashNetwork)
+{version.network=contracthashNetwork;version.type=Address.PayToContractHash;}
 return version;};Address._transformBuffer=function(buffer,network,type)
 {var info={};if(!(buffer instanceof Buffer)&&!(buffer instanceof Uint8Array))
 {throw new TypeError('Address supplied is not a buffer.');}
@@ -1313,7 +1314,7 @@ return error;};Address.isValid=function(data,network,type)
 {var version=new Buffer([this.network[this.type]]);var buf=Buffer.concat([version,this.hashBuffer]);return buf;};Address.prototype.toObject=Address.prototype.toJSON=function toObject()
 {return{hash:this.hashBuffer.toString('hex'),type:this.type,network:this.network.toString()};};Address.prototype.toString=function()
 {return Base58Check.encode(this.toBuffer());};Address.prototype.inspect=function()
-{return'<Address: '+this.toString()+', type: '+this.type+', network: '+this.network+'>';};celllink.Address=Address;function PrivateKey(data,network)
+{return'<Address: '+this.toString()+', type: '+this.type+', network: '+this.network+'>';};magnachain.Address=Address;function PrivateKey(data,network)
 {if(!(this instanceof PrivateKey))
 {return new PrivateKey(data,network);}
 if(data instanceof PrivateKey)
@@ -1376,7 +1377,7 @@ return Base58Check.encode(buf);};PrivateKey.prototype.toBigNumber=function()
 return this._pubkey;};PrivateKey.prototype.toAddress=function(network)
 {var pubkey=this.toPublicKey();return Address.fromPublicKey(pubkey,network||this.network);};PrivateKey.prototype.toObject=PrivateKey.prototype.toJSON=function toObject()
 {return{bn:this.bn.toString('hex'),compressed:this.compressed,network:this.network.toString()};};PrivateKey.prototype.inspect=function()
-{var uncompressed=!this.compressed?', uncompressed':'';return'<PrivateKey: '+this.toString()+', network: '+this.network+uncompressed+'>';};celllink.PrivateKey=PrivateKey;var hdPrivateKeyErrors=errors.HDPrivateKey;var MINIMUM_ENTROPY_BITS=128;var BITS_TO_BYTES=1/8;var MAXIMUM_ENTROPY_BITS=512;function HDPrivateKey(arg)
+{var uncompressed=!this.compressed?', uncompressed':'';return'<PrivateKey: '+this.toString()+', network: '+this.network+uncompressed+'>';};magnachain.PrivateKey=PrivateKey;var hdPrivateKeyErrors=errors.HDPrivateKey;var MINIMUM_ENTROPY_BITS=128;var BITS_TO_BYTES=1/8;var MAXIMUM_ENTROPY_BITS=512;function HDPrivateKey(arg)
 {if(arg instanceof HDPrivateKey)
 {return arg;}
 if(!(this instanceof HDPrivateKey))
@@ -1487,7 +1488,7 @@ var network=Networks.get(BufferUtil.integerFromBuffer(arg.version));var xprivkey
 {return'<HDPrivateKey: '+this.xprivkey+'>';};HDPrivateKey.prototype.toObject=HDPrivateKey.prototype.toJSON=function toObject()
 {return{network:Networks.get(BufferUtil.integerFromBuffer(this._buffers.version),'xprivkey').name,depth:BufferUtil.integerFromSingleByteBuffer(this._buffers.depth),fingerPrint:BufferUtil.integerFromBuffer(this.fingerPrint),parentFingerPrint:BufferUtil.integerFromBuffer(this._buffers.parentFingerPrint),childIndex:BufferUtil.integerFromBuffer(this._buffers.childIndex),chainCode:BufferUtil.bufferToHex(this._buffers.chainCode),privateKey:this.privateKey.toBuffer().toString('hex'),checksum:BufferUtil.integerFromBuffer(this._buffers.checksum),xprivkey:this.xprivkey};};HDPrivateKey.fromBuffer=function(arg)
 {return new HDPrivateKey(arg.toString());};HDPrivateKey.prototype.toBuffer=function()
-{return BufferUtil.copy(this._buffers.xprivkey);};HDPrivateKey.DefaultDepth=0;HDPrivateKey.DefaultFingerprint=0;HDPrivateKey.DefaultChildIndex=0;HDPrivateKey.Hardened=0x80000000;HDPrivateKey.MaxIndex=2*HDPrivateKey.Hardened;HDPrivateKey.RootElementAlias=['m','M','m\'','M\''];HDPrivateKey.VersionSize=4;HDPrivateKey.DepthSize=1;HDPrivateKey.ParentFingerPrintSize=4;HDPrivateKey.ChildIndexSize=4;HDPrivateKey.ChainCodeSize=32;HDPrivateKey.PrivateKeySize=32;HDPrivateKey.CheckSumSize=4;HDPrivateKey.DataLength=78;HDPrivateKey.SerializedByteSize=82;HDPrivateKey.VersionStart=0;HDPrivateKey.VersionEnd=HDPrivateKey.VersionStart+HDPrivateKey.VersionSize;HDPrivateKey.DepthStart=HDPrivateKey.VersionEnd;HDPrivateKey.DepthEnd=HDPrivateKey.DepthStart+HDPrivateKey.DepthSize;HDPrivateKey.ParentFingerPrintStart=HDPrivateKey.DepthEnd;HDPrivateKey.ParentFingerPrintEnd=HDPrivateKey.ParentFingerPrintStart+HDPrivateKey.ParentFingerPrintSize;HDPrivateKey.ChildIndexStart=HDPrivateKey.ParentFingerPrintEnd;HDPrivateKey.ChildIndexEnd=HDPrivateKey.ChildIndexStart+HDPrivateKey.ChildIndexSize;HDPrivateKey.ChainCodeStart=HDPrivateKey.ChildIndexEnd;HDPrivateKey.ChainCodeEnd=HDPrivateKey.ChainCodeStart+HDPrivateKey.ChainCodeSize;HDPrivateKey.PrivateKeyStart=HDPrivateKey.ChainCodeEnd+1;HDPrivateKey.PrivateKeyEnd=HDPrivateKey.PrivateKeyStart+HDPrivateKey.PrivateKeySize;HDPrivateKey.ChecksumStart=HDPrivateKey.PrivateKeyEnd;HDPrivateKey.ChecksumEnd=HDPrivateKey.ChecksumStart+HDPrivateKey.CheckSumSize;assert(HDPrivateKey.ChecksumEnd===HDPrivateKey.SerializedByteSize);celllink.HDPrivateKey=HDPrivateKey;var hdPublicKeyErrors=errors.HDPublicKey;function HDPublicKey(arg)
+{return BufferUtil.copy(this._buffers.xprivkey);};HDPrivateKey.DefaultDepth=0;HDPrivateKey.DefaultFingerprint=0;HDPrivateKey.DefaultChildIndex=0;HDPrivateKey.Hardened=0x80000000;HDPrivateKey.MaxIndex=2*HDPrivateKey.Hardened;HDPrivateKey.RootElementAlias=['m','M','m\'','M\''];HDPrivateKey.VersionSize=4;HDPrivateKey.DepthSize=1;HDPrivateKey.ParentFingerPrintSize=4;HDPrivateKey.ChildIndexSize=4;HDPrivateKey.ChainCodeSize=32;HDPrivateKey.PrivateKeySize=32;HDPrivateKey.CheckSumSize=4;HDPrivateKey.DataLength=78;HDPrivateKey.SerializedByteSize=82;HDPrivateKey.VersionStart=0;HDPrivateKey.VersionEnd=HDPrivateKey.VersionStart+HDPrivateKey.VersionSize;HDPrivateKey.DepthStart=HDPrivateKey.VersionEnd;HDPrivateKey.DepthEnd=HDPrivateKey.DepthStart+HDPrivateKey.DepthSize;HDPrivateKey.ParentFingerPrintStart=HDPrivateKey.DepthEnd;HDPrivateKey.ParentFingerPrintEnd=HDPrivateKey.ParentFingerPrintStart+HDPrivateKey.ParentFingerPrintSize;HDPrivateKey.ChildIndexStart=HDPrivateKey.ParentFingerPrintEnd;HDPrivateKey.ChildIndexEnd=HDPrivateKey.ChildIndexStart+HDPrivateKey.ChildIndexSize;HDPrivateKey.ChainCodeStart=HDPrivateKey.ChildIndexEnd;HDPrivateKey.ChainCodeEnd=HDPrivateKey.ChainCodeStart+HDPrivateKey.ChainCodeSize;HDPrivateKey.PrivateKeyStart=HDPrivateKey.ChainCodeEnd+1;HDPrivateKey.PrivateKeyEnd=HDPrivateKey.PrivateKeyStart+HDPrivateKey.PrivateKeySize;HDPrivateKey.ChecksumStart=HDPrivateKey.PrivateKeyEnd;HDPrivateKey.ChecksumEnd=HDPrivateKey.ChecksumStart+HDPrivateKey.CheckSumSize;assert(HDPrivateKey.ChecksumEnd===HDPrivateKey.SerializedByteSize);magnachain.HDPrivateKey=HDPrivateKey;var hdPublicKeyErrors=errors.HDPublicKey;function HDPublicKey(arg)
 {if(arg instanceof HDPublicKey)
 {return arg;}
 if(!(this instanceof HDPublicKey))
@@ -1568,7 +1569,7 @@ var network=Networks.get(BufferUtil.integerFromBuffer(arg.version));var xpubkey;
 {return'<HDPublicKey: '+this.xpubkey+'>';};HDPublicKey.prototype.toObject=HDPublicKey.prototype.toJSON=function toObject()
 {return{network:Networks.get(BufferUtil.integerFromBuffer(this._buffers.version)).name,depth:BufferUtil.integerFromSingleByteBuffer(this._buffers.depth),fingerPrint:BufferUtil.integerFromBuffer(this.fingerPrint),parentFingerPrint:BufferUtil.integerFromBuffer(this._buffers.parentFingerPrint),childIndex:BufferUtil.integerFromBuffer(this._buffers.childIndex),chainCode:BufferUtil.bufferToHex(this._buffers.chainCode),publicKey:this.publicKey.toString(),checksum:BufferUtil.integerFromBuffer(this._buffers.checksum),xpubkey:this.xpubkey};};HDPublicKey.fromBuffer=function(arg)
 {return new HDPublicKey(arg);};HDPublicKey.prototype.toBuffer=function()
-{return BufferUtil.copy(this._buffers.xpubkey);};HDPublicKey.Hardened=0x80000000;HDPublicKey.RootElementAlias=['m','M'];HDPublicKey.VersionSize=4;HDPublicKey.DepthSize=1;HDPublicKey.ParentFingerPrintSize=4;HDPublicKey.ChildIndexSize=4;HDPublicKey.ChainCodeSize=32;HDPublicKey.PublicKeySize=33;HDPublicKey.CheckSumSize=4;HDPublicKey.DataSize=78;HDPublicKey.SerializedByteSize=82;HDPublicKey.VersionStart=0;HDPublicKey.VersionEnd=HDPublicKey.VersionStart+HDPublicKey.VersionSize;HDPublicKey.DepthStart=HDPublicKey.VersionEnd;HDPublicKey.DepthEnd=HDPublicKey.DepthStart+HDPublicKey.DepthSize;HDPublicKey.ParentFingerPrintStart=HDPublicKey.DepthEnd;HDPublicKey.ParentFingerPrintEnd=HDPublicKey.ParentFingerPrintStart+HDPublicKey.ParentFingerPrintSize;HDPublicKey.ChildIndexStart=HDPublicKey.ParentFingerPrintEnd;HDPublicKey.ChildIndexEnd=HDPublicKey.ChildIndexStart+HDPublicKey.ChildIndexSize;HDPublicKey.ChainCodeStart=HDPublicKey.ChildIndexEnd;HDPublicKey.ChainCodeEnd=HDPublicKey.ChainCodeStart+HDPublicKey.ChainCodeSize;HDPublicKey.PublicKeyStart=HDPublicKey.ChainCodeEnd;HDPublicKey.PublicKeyEnd=HDPublicKey.PublicKeyStart+HDPublicKey.PublicKeySize;HDPublicKey.ChecksumStart=HDPublicKey.PublicKeyEnd;HDPublicKey.ChecksumEnd=HDPublicKey.ChecksumStart+HDPublicKey.CheckSumSize;assert(HDPublicKey.PublicKeyEnd===HDPublicKey.DataSize);assert(HDPublicKey.ChecksumEnd===HDPublicKey.SerializedByteSize);celllink.HDPublicKey=HDPublicKey;var Script=function Script(from)
+{return BufferUtil.copy(this._buffers.xpubkey);};HDPublicKey.Hardened=0x80000000;HDPublicKey.RootElementAlias=['m','M'];HDPublicKey.VersionSize=4;HDPublicKey.DepthSize=1;HDPublicKey.ParentFingerPrintSize=4;HDPublicKey.ChildIndexSize=4;HDPublicKey.ChainCodeSize=32;HDPublicKey.PublicKeySize=33;HDPublicKey.CheckSumSize=4;HDPublicKey.DataSize=78;HDPublicKey.SerializedByteSize=82;HDPublicKey.VersionStart=0;HDPublicKey.VersionEnd=HDPublicKey.VersionStart+HDPublicKey.VersionSize;HDPublicKey.DepthStart=HDPublicKey.VersionEnd;HDPublicKey.DepthEnd=HDPublicKey.DepthStart+HDPublicKey.DepthSize;HDPublicKey.ParentFingerPrintStart=HDPublicKey.DepthEnd;HDPublicKey.ParentFingerPrintEnd=HDPublicKey.ParentFingerPrintStart+HDPublicKey.ParentFingerPrintSize;HDPublicKey.ChildIndexStart=HDPublicKey.ParentFingerPrintEnd;HDPublicKey.ChildIndexEnd=HDPublicKey.ChildIndexStart+HDPublicKey.ChildIndexSize;HDPublicKey.ChainCodeStart=HDPublicKey.ChildIndexEnd;HDPublicKey.ChainCodeEnd=HDPublicKey.ChainCodeStart+HDPublicKey.ChainCodeSize;HDPublicKey.PublicKeyStart=HDPublicKey.ChainCodeEnd;HDPublicKey.PublicKeyEnd=HDPublicKey.PublicKeyStart+HDPublicKey.PublicKeySize;HDPublicKey.ChecksumStart=HDPublicKey.PublicKeyEnd;HDPublicKey.ChecksumEnd=HDPublicKey.ChecksumStart+HDPublicKey.CheckSumSize;assert(HDPublicKey.PublicKeyEnd===HDPublicKey.DataSize);assert(HDPublicKey.ChecksumEnd===HDPublicKey.SerializedByteSize);magnachain.HDPublicKey=HDPublicKey;var Script=function Script(from)
 {if(!(this instanceof Script))
 {return new Script(from);}
 this.chunks=[];if(BufferUtil.isBuffer(from))
@@ -1670,7 +1671,7 @@ return false;};Script.prototype.isPublicKeyIn=function()
 {return true;}}
 return false;};Script.prototype.isContractOut=function()
 {if(this.chunks.length===2)
-{if((this.chunks[0].opcodenum===Opcode.OP_PUB_CONTRACT||this.chunks[0].opcodenum===Opcode.OP_TRANS_CONTRACT)&&this.chunks[1].buf&&this.chunks[1].buf.length===20)
+{if((this.chunks[0].opcodenum===Opcode.OP_CONTRACT||this.chunks[0].opcodenum===Opcode.OP_CONTRACT_CHANGE)&&this.chunks[1].buf&&this.chunks[1].buf.length===20)
 {return true;}}
 return false;}
 Script.prototype.isScriptHashOut=function()
@@ -1826,7 +1827,7 @@ return true;};Script.prototype._decodeOP_N=function(opcode)
 {if(accurate&&lastOpcode>=Opcode.OP_1&&lastOpcode<=Opcode.OP_16)
 {n+=self._decodeOP_N(lastOpcode);}else
 {n+=20;}}
-lastOpcode=opcode;});return n;};celllink.Script=Script;var Interpreter=function Interpreter(obj)
+lastOpcode=opcode;});return n;};magnachain.Script=Script;var Interpreter=function Interpreter(obj)
 {if(!(this instanceof Interpreter))
 {return new Interpreter(obj);}
 if(obj)
@@ -1862,7 +1863,7 @@ if(stackCopy.length===0)
 if(!Interpreter.castToBool(stackCopy[stackCopy.length-1]))
 {this.errstr='SCRIPT_ERR_EVAL_FALSE_IN_P2SH_STACK';return false;}else
 {return true;}}
-return true;};celllink.Interpreter=Interpreter;Interpreter.prototype.initialize=function(obj)
+return true;};magnachain.Interpreter=Interpreter;Interpreter.prototype.initialize=function(obj)
 {this.stack=[];this.altstack=[];this.pc=0;this.pbegincodehash=0;this.nOpCount=0;this.vfExec=[];this.errstr='';this.flags=0;};Interpreter.prototype.set=function(obj)
 {this.script=obj.script||this.script;this.tx=obj.tx||this.tx;this.nin=typeof obj.nin!=='undefined'?obj.nin:this.nin;this.stack=obj.stack||this.stack;this.altstack=obj.altack||this.altstack;this.pc=typeof obj.pc!=='undefined'?obj.pc:this.pc;this.pbegincodehash=typeof obj.pbegincodehash!=='undefined'?obj.pbegincodehash:this.pbegincodehash;this.nOpCount=typeof obj.nOpCount!=='undefined'?obj.nOpCount:this.nOpCount;this.vfExec=obj.vfExec||this.vfExec;this.errstr=obj.errstr||this.errstr;this.flags=typeof obj.flags!=='undefined'?obj.flags:this.flags;};Interpreter.true=new Buffer([1]);Interpreter.false=new Buffer([]);Interpreter.MAX_SCRIPT_ELEMENT_SIZE=520;Interpreter.LOCKTIME_THRESHOLD=500000000;Interpreter.LOCKTIME_THRESHOLD_BN=new BN(Interpreter.LOCKTIME_THRESHOLD);Interpreter.SCRIPT_VERIFY_NONE=0;Interpreter.SCRIPT_VERIFY_P2SH=(1<<0);Interpreter.SCRIPT_VERIFY_STRICTENC=(1<<1);Interpreter.SCRIPT_VERIFY_DERSIG=(1<<2);Interpreter.SCRIPT_VERIFY_LOW_S=(1<<3);Interpreter.SCRIPT_VERIFY_NULLDUMMY=(1<<4);Interpreter.SCRIPT_VERIFY_SIGPUSHONLY=(1<<5);Interpreter.SCRIPT_VERIFY_MINIMALDATA=(1<<6);Interpreter.SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS=(1<<7);Interpreter.SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY=(1<<9);Interpreter.castToBool=function(buf)
 {for(var i=0;i<buf.length;i++)
@@ -2087,7 +2088,7 @@ this.stack.pop();this.stack.push(fSuccess?Interpreter.true:Interpreter.false);if
 {if(fSuccess)
 {this.stack.pop();}else
 {this.errstr='SCRIPT_ERR_CHECKMULTISIGVERIFY';return false;}}}
-break;case Opcode.OP_PUB_CONTRACT:case Opcode.OP_TRANS_CONTRACT:{}
+break;case Opcode.OP_CONTRACT:case Opcode.OP_CONTRACT_CHANGE:{}
 break;default:this.errstr='SCRIPT_ERR_BAD_OPCODE';return false;}}
 return true;};function UnspentOutput(data)
 {if(!(this instanceof UnspentOutput))
@@ -2101,7 +2102,7 @@ UnspentOutput.prototype.inspect=function()
 {return'<UnspentOutput: '+this.txId+':'+this.outputIndex+', satoshis: '+this.satoshis+', address: '+this.address+'>';};UnspentOutput.prototype.toString=function()
 {return this.txId+':'+this.outputIndex;};UnspentOutput.fromObject=function(data)
 {return new UnspentOutput(data);};UnspentOutput.prototype.toObject=UnspentOutput.prototype.toJSON=function toObject()
-{return{address:this.address?this.address.toString():undefined,txid:this.txId,vout:this.outputIndex,scriptPubKey:this.script.toBuffer().toString('hex'),amount:Unit.fromSatoshis(this.satoshis).toBTC()};};celllink.UnspentOutput=UnspentOutput;function TransactionSignature(arg)
+{return{address:this.address?this.address.toString():undefined,txid:this.txId,vout:this.outputIndex,scriptPubKey:this.script.toBuffer().toString('hex'),amount:Unit.fromSatoshis(this.satoshis).toBTC()};};magnachain.UnspentOutput=UnspentOutput;function TransactionSignature(arg)
 {if(!(this instanceof TransactionSignature))
 {return new TransactionSignature(arg);}
 if(arg instanceof TransactionSignature)
@@ -2113,7 +2114,7 @@ inherits(TransactionSignature,Signature);TransactionSignature.prototype._fromObj
 {this._checkObjectArgs(arg);this.publicKey=new PublicKey(arg.publicKey);this.prevTxId=BufferUtil.isBuffer(arg.prevTxId)?arg.prevTxId:new Buffer(arg.prevTxId,'hex');this.outputIndex=arg.outputIndex;this.inputIndex=arg.inputIndex;this.signature=(arg.signature instanceof Signature)?arg.signature:BufferUtil.isBuffer(arg.signature)?Signature.fromBuffer(arg.signature):Signature.fromString(arg.signature);this.sigtype=arg.sigtype;return this;};TransactionSignature.prototype._checkObjectArgs=function(arg)
 {$.checkArgument(PublicKey(arg.publicKey),'publicKey');$.checkArgument(!_.isUndefined(arg.inputIndex),'inputIndex');$.checkArgument(!_.isUndefined(arg.outputIndex),'outputIndex');$.checkState(_.isNumber(arg.inputIndex),'inputIndex must be a number');$.checkState(_.isNumber(arg.outputIndex),'outputIndex must be a number');$.checkArgument(arg.signature,'signature');$.checkArgument(arg.prevTxId,'prevTxId');$.checkState(arg.signature instanceof Signature||BufferUtil.isBuffer(arg.signature)||JSUtil.isHexa(arg.signature),'signature must be a buffer or hexa value');$.checkState(BufferUtil.isBuffer(arg.prevTxId)||JSUtil.isHexa(arg.prevTxId),'prevTxId must be a buffer or hexa value');$.checkArgument(arg.sigtype,'sigtype');$.checkState(_.isNumber(arg.sigtype),'sigtype must be a number');};TransactionSignature.prototype.toObject=TransactionSignature.prototype.toJSON=function toObject()
 {return{publicKey:this.publicKey.toString(),prevTxId:this.prevTxId.toString('hex'),outputIndex:this.outputIndex,inputIndex:this.inputIndex,signature:this.signature.toString(),sigtype:this.sigtype};};TransactionSignature.fromObject=function(object)
-{$.checkArgument(object);return new TransactionSignature(object);};celllink.TransactionSignature=TransactionSignature;var MAX_SAFE_INTEGER=0x1fffffffffffff;function Output(args)
+{$.checkArgument(object);return new TransactionSignature(object);};magnachain.TransactionSignature=TransactionSignature;var MAX_SAFE_INTEGER=0x1fffffffffffff;function Output(args)
 {if(!(this instanceof Output))
 {return new Output(args);}
 if(_.isObject(args))
@@ -2164,7 +2165,7 @@ return'<Output ('+this.satoshis+' sats) '+scriptStr+'>';};Output.fromBufferReade
 return new Output(obj);};Output.prototype.toBufferWriter=function(writer)
 {if(!writer)
 {writer=new BufferWriter();}
-writer.writeUInt64LEBN(this._satoshisBN);var script=this._scriptBuffer;writer.writeVarintNum(script.length);writer.write(script);return writer;};celllink.Output=Output;var SIGHASH_SINGLE_BUG='0000000000000000000000000000000000000000000000000000000000000001';var BITS_64_ON='ffffffffffffffff';var sighash=function sighash(transaction,sighashType,inputNumber,subscript)
+writer.writeUInt64LEBN(this._satoshisBN);var script=this._scriptBuffer;writer.writeVarintNum(script.length);writer.write(script);return writer;};magnachain.Output=Output;var SIGHASH_SINGLE_BUG='0000000000000000000000000000000000000000000000000000000000000001';var BITS_64_ON='ffffffffffffffff';var sighash=function sighash(transaction,sighashType,inputNumber,subscript)
 {var i;var txcopy=Transaction.shallowCopy(transaction);subscript=new Script(subscript);subscript.removeCodeseparators();for(i=0;i<txcopy.inputs.length;i++)
 {txcopy.inputs[i]=new Input(txcopy.inputs[i]).setScript(Script.empty());}
 txcopy.inputs[inputNumber]=new Input(txcopy.inputs[inputNumber]).setScript(subscript);if((sighashType&31)===Signature.SIGHASH_NONE||(sighashType&31)===Signature.SIGHASH_SINGLE)
@@ -2183,7 +2184,7 @@ var buf=new BufferWriter().write(txcopy.toBufferForSign()).writeInt32LE(sighashT
 {var hashbuf=sighash(transaction,sighashType,inputIndex,subscript);var sig=ECDSA.sign(hashbuf,privateKey,'little').set({nhashtype:sighashType});return sig;}
 function verify(transaction,signature,publicKey,inputIndex,subscript)
 {$.checkArgument(!_.isUndefined(transaction));$.checkArgument(!_.isUndefined(signature)&&!_.isUndefined(signature.nhashtype));var hashbuf=sighash(transaction,signature.nhashtype,inputIndex,subscript);return ECDSA.verify(hashbuf,signature,publicKey,'little');}
-var Sighash={};Sighash.sighash=sighash;Sighash.sign=sign;Sighash.verify=verify;celllink.Sighash=Sighash;var MAXINT=0xffffffff;var DEFAULT_RBF_SEQNUMBER=MAXINT-2;var DEFAULT_SEQNUMBER=MAXINT;var DEFAULT_LOCKTIME_SEQNUMBER=MAXINT-1;function Input(params)
+var Sighash={};Sighash.sighash=sighash;Sighash.sign=sign;Sighash.verify=verify;magnachain.Sighash=Sighash;var MAXINT=0xffffffff;var DEFAULT_RBF_SEQNUMBER=MAXINT-2;var DEFAULT_SEQNUMBER=MAXINT;var DEFAULT_LOCKTIME_SEQNUMBER=MAXINT-1;function Input(params)
 {if(!(this instanceof Input))
 {return new Input(params);}
 if(params)
@@ -2226,7 +2227,7 @@ Input.prototype.getSignatures=function()
 {throw new errors.AbstractMethodInvoked('Input#clearSignatures');};Input.prototype.isValidSignature=function(transaction,signature)
 {signature.signature.nhashtype=signature.sigtype;return Sighash.verify(transaction,signature.signature,signature.publicKey,signature.inputIndex,this.output.script);};Input.prototype.isNull=function()
 {return this.prevTxId.toString('hex')==='0000000000000000000000000000000000000000000000000000000000000000'&&this.outputIndex===0xffffffff;};Input.prototype._estimateSize=function()
-{return this.toBufferWriter().toBuffer().length;};celllink.Input=Input;function MultiSigInput(input,pubkeys,threshold,signatures)
+{return this.toBufferWriter().toBuffer().length;};magnachain.Input=Input;function MultiSigInput(input,pubkeys,threshold,signatures)
 {Input.apply(this,arguments);var self=this;pubkeys=pubkeys||input.publicKeys;threshold=threshold||input.threshold;signatures=signatures||input.signatures;this.publicKeys=_.sortBy(pubkeys,function(publicKey){return publicKey.toString('hex');});$.checkState(Script.buildMultisigOut(this.publicKeys,threshold).equals(this.output.script),'Provided public keys don\'t match to the provided output script');this.publicKeyIndex={};_.each(this.publicKeys,function(publicKey,index)
 {self.publicKeyIndex[publicKey.toString()]=index;});this.threshold=threshold;this.signatures=signatures?this._deserializeSignatures(signatures):new Array(this.publicKeys.length);}
 inherits(MultiSigInput,Input);MultiSigInput.prototype.toObject=function()
@@ -2262,7 +2263,7 @@ var signature=new TransactionSignature({signature:Signature.fromTxFormat(signatu
 {signatureMatch=signature;return false;}
 return true;});return signatureMatch?signatureMatch:null;});};MultiSigInput.OPCODES_SIZE=1;MultiSigInput.SIGNATURE_SIZE=73;MultiSigInput.prototype._estimateSize=function()
 {return MultiSigInput.OPCODES_SIZE+
-this.threshold*MultiSigInput.SIGNATURE_SIZE;};celllink.MultiSigInput=MultiSigInput;function MultiSigScriptHashInput(input,pubkeys,threshold,signatures)
+this.threshold*MultiSigInput.SIGNATURE_SIZE;};magnachain.MultiSigInput=MultiSigInput;function MultiSigScriptHashInput(input,pubkeys,threshold,signatures)
 {Input.apply(this,arguments);var self=this;pubkeys=pubkeys||input.publicKeys;threshold=threshold||input.threshold;signatures=signatures||input.signatures;this.publicKeys=_.sortBy(pubkeys,function(publicKey){return publicKey.toString('hex');});this.redeemScript=Script.buildMultisigOut(this.publicKeys,threshold);$.checkState(Script.buildScriptHashOut(this.redeemScript).equals(this.output.script),'Provided public keys don\'t hash to the provided output');this.publicKeyIndex={};_.each(this.publicKeys,function(publicKey,index)
 {self.publicKeyIndex[publicKey.toString()]=index;});this.threshold=threshold;this.signatures=signatures?this._deserializeSignatures(signatures):new Array(this.publicKeys.length);}
 inherits(MultiSigScriptHashInput,Input);MultiSigScriptHashInput.prototype.toObject=function()
@@ -2292,7 +2293,7 @@ return signature.toObject();});};MultiSigScriptHashInput.prototype.getSignatures
 {signature.signature.nhashtype=signature.sigtype;return Sighash.verify(transaction,signature.signature,signature.publicKey,signature.inputIndex,this.redeemScript);};MultiSigScriptHashInput.OPCODES_SIZE=7;MultiSigScriptHashInput.SIGNATURE_SIZE=74;MultiSigScriptHashInput.PUBKEY_SIZE=34;MultiSigScriptHashInput.prototype._estimateSize=function()
 {return MultiSigScriptHashInput.OPCODES_SIZE+
 this.threshold*MultiSigScriptHashInput.SIGNATURE_SIZE+
-this.publicKeys.length*MultiSigScriptHashInput.PUBKEY_SIZE;};celllink.MultiSigScriptHashInput=MultiSigScriptHashInput;function PublicKeyInput()
+this.publicKeys.length*MultiSigScriptHashInput.PUBKEY_SIZE;};magnachain.MultiSigScriptHashInput=MultiSigScriptHashInput;function PublicKeyInput()
 {Input.apply(this,arguments);}
 inherits(PublicKeyInput,Input);PublicKeyInput.prototype.getSignatures=function(transaction,privateKey,index,sigtype)
 {$.checkState(this.output instanceof Output);sigtype=sigtype||Signature.SIGHASH_ALL;var publicKey=privateKey.toPublicKey();if(publicKey.toString()===this.output.script.getPublicKey().toString('hex'))
@@ -2301,7 +2302,7 @@ return[];};PublicKeyInput.prototype.addSignature=function(transaction,signature)
 {$.checkState(this.isValidSignature(transaction,signature),'Signature is invalid');this.setScript(Script.buildPublicKeyIn(signature.signature.toDER(),signature.sigtype));return this;};PublicKeyInput.prototype.clearSignatures=function()
 {this.setScript(Script.empty());return this;};PublicKeyInput.prototype.isFullySigned=function()
 {return this.script.isPublicKeyIn();};PublicKeyInput.SCRIPT_MAX_SIZE=73;PublicKeyInput.prototype._estimateSize=function()
-{return PublicKeyInput.SCRIPT_MAX_SIZE;};celllink.PublicKeyInput=PublicKeyInput;function PublicKeyHashInput()
+{return PublicKeyInput.SCRIPT_MAX_SIZE;};magnachain.PublicKeyInput=PublicKeyInput;function PublicKeyHashInput()
 {Input.apply(this,arguments);}
 inherits(PublicKeyHashInput,Input);PublicKeyHashInput.prototype.getSignatures=function(transaction,privateKey,index,sigtype,hashData)
 {$.checkState(this.output instanceof Output);hashData=hashData||Hash.sha256ripemd160(privateKey.publicKey.toBuffer());sigtype=sigtype||Signature.SIGHASH_ALL;if(BufferUtil.equals(hashData,this.output.script.getPublicKeyHash()))
@@ -2310,14 +2311,14 @@ return[];};PublicKeyHashInput.prototype.addSignature=function(transaction,signat
 {$.checkState(this.isValidSignature(transaction,signature),'Signature is invalid');this.setScript(Script.buildPublicKeyHashIn(signature.publicKey,signature.signature.toDER(),signature.sigtype));return this;};PublicKeyHashInput.prototype.clearSignatures=function()
 {this.setScript(Script.empty());return this;};PublicKeyHashInput.prototype.isFullySigned=function()
 {return this.script.isPublicKeyHashIn();};PublicKeyHashInput.SCRIPT_MAX_SIZE=73+34;PublicKeyHashInput.prototype._estimateSize=function()
-{return PublicKeyHashInput.SCRIPT_MAX_SIZE;};celllink.PublicKeyHashInput=PublicKeyHashInput;function ContactInput()
+{return PublicKeyHashInput.SCRIPT_MAX_SIZE;};magnachain.PublicKeyHashInput=PublicKeyHashInput;function ContactInput()
 {Input.apply(this,arguments);}
 inherits(ContactInput,Input);ContactInput.prototype.getSignatures=function(transaction,privateKey,index,sigtype,hashData)
 {return[];};ContactInput.prototype.addSignature=function(transaction,signature)
 {return this;};ContactInput.prototype.clearSignatures=function()
 {this.setScript(Script.empty());return this;};ContactInput.prototype.isFullySigned=function()
 {return true;};ContactInput.SCRIPT_MAX_SIZE=0;ContactInput.prototype._estimateSize=function()
-{return ContactInput.SCRIPT_MAX_SIZE;};celllink.ContactInput=ContactInput;var compare=Buffer.compare;function Transaction(serialized)
+{return ContactInput.SCRIPT_MAX_SIZE;};magnachain.ContactInput=ContactInput;var compare=Buffer.compare;function Transaction(serialized)
 {if(!(this instanceof Transaction))
 {return new Transaction(serialized);}
 this.inputs=[];this.outputs=[];this._inputAmount=undefined;this._outputAmount=undefined;if(serialized)
@@ -2382,39 +2383,22 @@ Transaction.prototype.toBufferWriter=function(writer)
 {writer.writeVarintNum(this.inputs.length);_.each(this.inputs,function(input)
 {input.toBufferWriter(writer);});writer.writeVarintNum(this.outputs.length);_.each(this.outputs,function(output)
 {output.toBufferWriter(writer);});writer.writeUInt32LE(this.nLockTime);writer.writeInt32LE(this.version);this.WriteExtra(writer,true);return writer;};Transaction.prototype.WriteExtra=function(bw,sign)
-{if(this.version==PUBLISH_CONTRACT_VERSION)
-{bw.write(this.contractAdd);if(this.contractCode==null)
-{console.error("contractCode is null！");return;}
-bw.write(this.contractCode);this.contractSender.WriteForCl(bw);if(!sign)
-{var scriptBuf;if(this.scontractScriptSig==null)
-{scriptBuf=Script.empty().toBuffer();}
-else
-{scriptBuf=this.scontractScriptSig.toBuffer();}
-bw.writeVarintNum(scriptBuf.length);bw.write(scriptBuf);}
-bw.writeUInt32LE(this.contractCallId);}
-else if(this.version==CALL_CONTRACT_VERSION)
-{bw.write(this.contractAdd);this.contractSender.WriteForCl(bw);var bufFun=Buffer._fromString(this.contractFun);bw.writeVarintNum(bufFun.length);bw.write(bufFun);var bufParams=Buffer._fromString(this.contractParams);bw.writeVarintNum(bufParams.length);bw.write(bufParams);if(!sign)
-{var scriptBuf;if(this.scontractScriptSig==null)
-{scriptBuf=Script.empty().toBuffer();}
-else
-{scriptBuf=this.scontractScriptSig.toBuffer();}
-bw.writeVarintNum(scriptBuf.length);if(scriptBuf.length>0)
-{bw.write(scriptBuf);}}
-bw.writeUInt32LE(this.contractCallId);}};Transaction.prototype.fromBuffer=function(buffer)
+{if(this.version==PUBLISH_CONTRACT_VERSION||this.version==CALL_CONTRACT_VERSION)
+{bw.write(this.contractdata.address);this.contractdata.sender.WriteForCl(bw);bw.writeVarintNum(this.contractdata.codeOrFunc.length);bw.write(this.contractdata.codeOrFunc);bw.writeVarintNum(this.contractdata.args.length);bw.write(this.contractdata.args);bw.writeUInt64LEBN(this.contractdata.amountOut);if(!sign)
+{var scriptBuf;if(this.contractdata.signature==null)
+{scriptBuf=Script.empty().toBuffer();}else
+{scriptBuf=this.contractdata.signature.toBuffer();}
+bw.writeVarintNum(scriptBuf.length);bw.write(scriptBuf);}}};Transaction.prototype.fromBuffer=function(buffer)
 {var reader=new BufferReader(buffer);return this.fromBufferReader(reader);};Transaction.prototype.fromBufferReader=function(reader)
 {$.checkArgument(!reader.finished(),'No transaction data received');var i,sizeTxIns,sizeTxOuts;this.version=reader.readInt32LE();sizeTxIns=reader.readVarintNum();for(i=0;i<sizeTxIns;i++)
 {var input=Input.fromBufferReader(reader);this.inputs.push(input);}
 sizeTxOuts=reader.readVarintNum();for(i=0;i<sizeTxOuts;i++)
 {this.outputs.push(Output.fromBufferReader(reader));}
 this.nLockTime=reader.readUInt32LE();this.ReadExtra(reader);return this;};Transaction.prototype.ReadExtra=function(br)
-{if(this.version==PUBLISH_CONTRACT_VERSION)
-{this.contractAdd=br.read(20);this.contractSender=PublicKey.ReadForCl(br);if(!sign)
-{var scriptBuffer=br.readVarLengthBuffer();this.scontractScriptSig=Script.fromBuffer(scriptBuffer);}
-this.contractCallId=br.readUInt32LE();}
-else if(this.version==CALL_CONTRACT_VERSION)
-{this.contractAdd=br.read(20);this.contractSender=PublicKey.ReadForCl(br);var bufFun=br.readVarLengthBuffer();this.contractFun=bufFun.toString();var bufParams=br.readVarLengthBuffer();this.contractParams=bufParams.toString();if(!sign)
-{var scriptBuffer=br.readVarLengthBuffer();this.scontractScriptSig=Script.fromBuffer(scriptBuffer);}
-this.contractCallId=br.readUInt32LE();}}
+{if(this.version==PUBLISH_CONTRACT_VERSION||this.version==CALL_CONTRACT_VERSION)
+{this.contractdata={}
+this.contractdata.address=br.read(20);this.contractdata.sender=PublicKey.ReadForCl(br);this.contractdata.codeOrFunc=br.readVarLengthBuffer();this.contractdata.args=br.readVarLengthBuffer();this.contractdata.amountOut=br.readUInt64LEBN();if(!sign)
+{var scriptBuffer=br.readVarLengthBuffer();this.contractdata.signature=Script.fromBuffer(scriptBuffer);}}}
 Transaction.prototype.toObject=Transaction.prototype.toJSON=function toObject()
 {var inputs=[];this.inputs.forEach(function(input)
 {inputs.push(input.toObject());});var outputs=[];this.outputs.forEach(function(output)
@@ -2599,9 +2583,9 @@ _.each(this.getSignatures(privateKey,sigtype),function(signature)
 {self.applySignature(signature);});if(this.IsSmartContract()&&this.hasAllInputSign())
 {self.signSmartContract(privateKey,sigtype);}
 return this;};Transaction.prototype.signSmartContract=function(privateKey,sigtype)
-{if(this.IsSmartContract()&&this.contractSender!=null)
-{var hashSign=Script.SignatureHashForContract(this);var privKey=new PrivateKey(privateKey);sigtype=sigtype||Signature.SIGHASH_ALL;if(privKey.publicKey.toString()===this.contractSender.toString())
-{var sig=ECDSA.sign(hashSign,privKey,'little').set({nhashtype:sigtype});var script=new Script();script.add(BufferUtil.concat([sig.toBuffer(),BufferUtil.integerAsSingleByteBuffer(sigtype||Signature.SIGHASH_ALL)]));this.scontractScriptSig=script;}}}
+{if(this.IsSmartContract()&&this.contractdata.sender!=null)
+{var hashSign=Script.SignatureHashForContract(this);var privKey=new PrivateKey(privateKey);sigtype=sigtype||Signature.SIGHASH_ALL;if(privKey.publicKey.toString()===this.contractdata.sender.toString())
+{var sig=ECDSA.sign(hashSign,privKey,'little').set({nhashtype:sigtype});var script=new Script();script.add(BufferUtil.concat([sig.toBuffer(),BufferUtil.integerAsSingleByteBuffer(sigtype||Signature.SIGHASH_ALL)]));this.contractdata.signature=script;}}}
 Transaction.prototype.getSignatures=function(privKey,sigtype)
 {privKey=new PrivateKey(privKey);sigtype=sigtype||Signature.SIGHASH_ALL;var transaction=this;var results=[];var hashData=Hash.sha256ripemd160(privKey.publicKey.toBuffer());_.each(this.inputs,function forEachInput(input,index)
 {_.each(input.getSignatures(transaction,privKey,index,sigtype,hashData),function(signature)
@@ -2647,5 +2631,4 @@ return false;};Transaction.prototype.enableRBF=function()
 {for(var i=0;i<this.inputs.length;i++)
 {var input=this.inputs[i];if(input.sequenceNumber>=Input.MAXINT-1)
 {input.sequenceNumber=Input.DEFAULT_RBF_SEQNUMBER;}}
-return this;};Transaction.prototype.SetExtraData=function(contractAddr,contractCode,contractSender,contractFun,contractParams,scontractScriptSig,contractCallId)
-{this.contractAddr=contractAddr;this.contractCode=contractCode;this.contractSender=contractSender;this.contractFun=contractFun;this.contractParams=contractParams;this.scontractScriptSig=scontractScriptSig;this.contractCallId=contractCallId;};celllink.Transaction=Transaction;
+return this;};magnachain.Transaction=Transaction;
