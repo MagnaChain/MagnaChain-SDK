@@ -1,68 +1,65 @@
-/*
+console.log("Test MagnaChain begin.....");
 
-智能合约调用测试，F12打开chrome控制台
-    1、通过RPC接口 precallcontract 获取JSON格式的返回值，如下面 txhex: testcallcontract 中的var rpcRet。
-	2、如函数 testcallcontract 签名
-	3、通过rpc sendrawtransaction 把签名后的交易的hexstring，即var txsignedhex = kTras.toString();的值发送magnachain节点,
-*/
-function signcontract(rpcRet, inprikeys)
+// var config = 
+// {    
+//     rpcuser: 'user',
+//     rpcpassword: 'pwd',
+//     host: 'http://127.0.0.1',
+//     port: 8201
+// };
+
+// var rpc = new RpcClient(config);
+
+// var OnRpcCallback = function(status, error, jsonRet)
+// {
+// 	console.log("OnRpcCallback status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+// }
+
+// rpc.sendCommand(OnRpcCallback, "getinfo");
+
+// var srcPriKey = "cMq3Wex8xRh1YrY3KhKRX2LBiLD7wGHPe5AGSUtwfAH6EM5s4ABz";
+// var srcAddr = "mdUmmGLVdsYxMgKnsEJJ77m7ASmbxMdTKU";     // 100 coins
+// var destAddr = "mXboeSw6t4Y6SgWZ3Ct1pKYVtXwizMGfT7";    // 0 coins
+
+// var OnRpcSigned = function(status, error, jsonRet)
+// {
+//     console.log("OnRpcSigned status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+// }
+
+// var OnRpcPreTransaction = function(status, error, jsonRet)
+// {
+//     console.log("OnRpcPreTransaction status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+
+//     var kTras = new Transaction(jsonRet.txhex);
+// 	kTras.setOutputsFromCoins(jsonRet.coins);
+	
+// 	//kTras.sign(prikeys);
+// 	kTras.sign(srcPriKey);
+	
+// 	var txsignedhex = kTras.toString();
+// 	console.log("signed txhex: "+txsignedhex);
+
+//     rpc.sendCommand(OnRpcSigned, "sendrawtransaction", txsignedhex);
+// }
+
+// // premaketransaction
+// // Arguments:
+// // 1. "fromaddress"                  (string, required) The address for input coins
+// // 2. "toaddress"                    (string, required) Send to address
+// // 3. "changeaddress"                (string, required) The address for change coins
+// // 4. "amount"                       (numeric or string, required) The amount in MGC to send. eg 0.1
+// // 5. "fee"                          (numeric or string, optional) The amount in MGC to for fee eg 0.0001, default 0 and will calc fee by system
+
+// rpc.sendCommand(OnRpcPreTransaction, "premaketransaction", "mdUmmGLVdsYxMgKnsEJJ77m7ASmbxMdTKU", "mXboeSw6t4Y6SgWZ3Ct1pKYVtXwizMGfT7", "mdUmmGLVdsYxMgKnsEJJ77m7ASmbxMdTKU", 3.5);
+
+magnachain.initializeRpc("http://127.0.0.1", 8201, "user", "pwd");
+
+var OnTransfer = function(bSucc)
 {
-	/*
-	var prikeys = new Array();
-	if (_.isArray(inprikeys))
-    {
-        _.each(inprikeys, function (pk)
-        {
-            prikeys.push(new PrivateKey(pk));
-        });
-    }
-	else
-	{
-		prikeys.push(new PrivateKey(inprikeys));
-	}
-	*/
-	var kTras = new Transaction(rpcRet.txhex);
-	kTras.setOutputsFromCoins(rpcRet.coins);
-	
-	//kTras.sign(prikeys);
-	kTras.sign(inprikeys);
-	
-	var txsignedhex = kTras.toString();
-	console.log("txhex: "+txsignedhex);
-	
-	kTras.verify();
-	kTras.isFullySigned();
-	return txsignedhex;
+    console.log("Transfer result: " + bSucc);
 }
 
-function testcallcontract()
-{
-	/*
-privkey	L3NaEWWcxmefNU8vccDf2f6Gjd9iEDaZX9BNhsrCgwyFA4SfR4aB
+magnachain.MiscFunc.transferByRpc(OnTransfer, "cMq3Wex8xRh1YrY3KhKRX2LBiLD7wGHPe5AGSUtwfAH6EM5s4ABz", "mXboeSw6t4Y6SgWZ3Ct1pKYVtXwizMGfT7", 10.0);
 
-pubkey 0231f3dd2b894480d388dae87e061d31bb848584f4802c3226fd3dcab9bf11674c
 
-pubkeyhash XQRLvExkE3gnKcrfhdtfY8DW2nxtBQVEw4
-	*/
-	
-	var rpcRet ={
-  "return": [
-    true
-  ],
-  "txhex": "0400000001069e7c2dd421c444395788326613355d9cb35fab5c039385fb457fac75767d137b00000000feffffff0238310a99e80000001976a9148f605dd5de02a198af15746f33f7bcd83209b45088ac00ca9a3b0000000016c1141c54d97609ac16ff372027480dc8f5a2e49cba71140000001c54d97609ac16ff372027480dc8f5a2e49cba71210231f3dd2b894480d388dae87e061d31bb848584f4802c3226fd3dcab9bf11674c046275726e055b2231225d000000000000000000",
-  "coins": [
-    {
-      "txhash": "137d7675ac7f45fb8593035cab5fb39c5d3513663288573944c421d42d7c9e06",
-      "outn": 123,
-      "value": 10000.00000000,
-      "script": "76a9148f605dd5de02a198af15746f33f7bcd83209b45088ac"
-    }
-  ]
-}
-
-	var inprikeys = ["L3NaEWWcxmefNU8vccDf2f6Gjd9iEDaZX9BNhsrCgwyFA4SfR4aB"];
-	
-	signcontract(rpcRet, inprikeys);
-}
-testcallcontract();
 

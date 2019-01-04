@@ -2572,7 +2572,7 @@ len=this.outputs.length;for(i=0;i<len;i++)
 {this.outputs[i].toBufferWriter(stream);}
 this.WriteExtra(stream,true);}
 Transaction.prototype.IsSmartContract=function()
-{return this.version==PUBLISH_CONTRACT_VERSION||CALL_CONTRACT_VERSION;}
+{return this.version==PUBLISH_CONTRACT_VERSION||this.version==CALL_CONTRACT_VERSION;}
 Transaction.prototype.hasAllInputSign=function()
 {return _.every(this.inputs.map(function(input)
 {return input.output.script.isContractOut()||(input._scriptBuffer&&input._scriptBuffer.length>0);}));};Transaction.prototype.sign=function(privateKey,sigtype)
@@ -2631,4 +2631,70 @@ return false;};Transaction.prototype.enableRBF=function()
 {for(var i=0;i<this.inputs.length;i++)
 {var input=this.inputs[i];if(input.sequenceNumber>=Input.MAXINT-1)
 {input.sequenceNumber=Input.DEFAULT_RBF_SEQNUMBER;}}
-return this;};magnachain.Transaction=Transaction;
+return this;};magnachain.Transaction=Transaction;function getXmlHttpRequest()
+{if(window.XMLHttpRequest)
+{return new XMLHttpRequest();}
+else if(window.ActiveXObject)
+{return new ActiveXObject("Microsoft.XMLHttpRequest");}}
+function isEmpty(obj)
+{if(typeof obj=="undefined"||obj==null||obj=="")
+{return true;}
+else
+{return false;}}
+function RpcClient(opts)
+{opts=opts||{};this.host=opts.host||'http://127.0.0.1';this.rpcport=opts.rpcport||8201;this.rpcuser=opts.rpcuser||'user';this.rpcpassword=opts.rpcpassword||'pwd';this.protocol=getXmlHttpRequest();this.protocol.withCredentials=true;this.protocol.timeout=3000;this.protocol.ontimeout=function(event)
+{console.log("Request timeout!");}}
+RpcClient.prototype.sendCommand=function()
+{var arrArgsRaw;if(arguments.length==1&&Array.isArray(arguments[0]))
+{arrArgsRaw=arguments[0];}
+else
+{arrArgsRaw=Array.prototype.slice.apply(arguments);}
+var i;var arrArgs=new Array();for(i=0;i<arrArgsRaw.length;i++)
+{if(arrArgsRaw[i]!=null&&arrArgsRaw[i]!=undefined)
+{arrArgs.push(arrArgsRaw[i]);}}
+if(arrArgs.length<2)
+{console.log("Too less arguments");return;}
+var req={};req['method']=arrArgs[1];if(arrArgs.length>2)
+{req['params']=arrArgs.slice(2);}
+var jsonReq=JSON.stringify(req);var url=this.host+':'+this.rpcport.toString();this.protocol.open('POST',url);var auth=Buffer(this.rpcuser+':'+this.rpcpassword).toString('base64');this.protocol.setRequestHeader('Content-Length',jsonReq.length);this.protocol.setRequestHeader('Content-Type','application/json');this.protocol.setRequestHeader('Authorization','Basic '+auth);this.protocol.send(jsonReq);var fnCallback=arrArgs[0];this.protocol.onreadystatechange=function()
+{if(this.readyState===4)
+{if(this.status===200)
+{var result=JSON.parse(this.responseText);if(fnCallback!=null)
+{fnCallback(this.status,result.error,result.result);}}
+else
+{var error="Request was failure, status: "+this.status+", "+this.statusText;if(fnCallback!=null)
+{fnCallback(this.status,error,null);}}}
+else
+{}};}
+var _MCRpcSig=null;function initializeRpc(strHost,iPort,strRpcUser,strRpcPassword)
+{if(_MCRpcSig!=null)
+{return;}
+var config={rpcuser:strRpcUser,rpcpassword:strRpcPassword,host:strHost,port:iPort};_MCRpcSig=new RpcClient(config);}
+function sendRpcCommand()
+{if(_MCRpcSig==null)
+{console.log("RpcClient has not initialized!");return;}
+var arrArgs=Array.prototype.slice.apply(arguments);_MCRpcSig.sendCommand(arrArgs);}
+magnachain.RpcClient=RpcClient;magnachain.initializeRpc=initializeRpc;magnachain.sendRpcCommand=sendRpcCommand;var MiscFunc={};var _MCRpcTransfering=false;function transferByRpc(fnCallback,strFromPriKey,strToAddress,fAmount,strChargeAddress,fFee)
+{if(_MCRpcSig==null)
+{console.log("RpcClient has not initialized, can not transfer by Rpc.");return;}
+if(isEmpty(strFromPriKey)||isEmpty(strToAddress)||fAmount<=0.0)
+{console.log("Invalid paraments!");return;}
+if(_MCRpcTransfering)
+{console.log("Pre transfer has not done, ignore!");return;}
+_MCRpcTransfering=true;var kPriKey=PrivateKey.fromWIF(strFromPriKey);var strFromAddress=kPriKey.toAddress().toString();var OnRpcSigned=function(status,error,jsonRet)
+{if(status!=200||(error!=null&&error!=undefined))
+{console.log("OnRpcSigned status: "+status+" error: "+error+" msg: "+JSON.stringify(jsonRet));_MCRpcTransfering=false;if(fnCallback!=null)
+{fnCallback(false);}
+return;}
+_MCRpcTransfering=false;if(fnCallback!=null)
+{fnCallback(true);}}
+var OnRpcPreTransaction=function(status,error,jsonRet)
+{if(status!=200||(error!=null&&error!=undefined))
+{console.log("OnRpcPreTransaction status: "+status+" error: "+error+" msg: "+JSON.stringify(jsonRet));_MCRpcTransfering=false;if(fnCallback!=null)
+{fnCallback(false);}
+return;}
+var kTras=new Transaction(jsonRet.txhex);kTras.setOutputsFromCoins(jsonRet.coins);kTras.sign(kPriKey);var txsignedhex=kTras.toString();sendRpcCommand(OnRpcSigned,"sendrawtransaction",txsignedhex);}
+if(isEmpty(strChargeAddress))
+{strChargeAddress=strFromAddress;}
+sendRpcCommand(OnRpcPreTransaction,"premaketransaction",strFromAddress,strToAddress,strChargeAddress,fAmount,fFee);}
+MiscFunc.transferByRpc=transferByRpc;magnachain.MiscFunc=MiscFunc;

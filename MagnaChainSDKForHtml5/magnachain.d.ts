@@ -796,5 +796,33 @@ declare module magnachain
         */
         toSatoshis() : Number;
     }
+
+    class RpcClient
+    {
+        // opts: map struct
+        // host {string}, rpcport {int}, rpcuser {string} rpcpassword{string} 
+        constructor(opts : any);
+
+        // arguments: callback, method, args...
+        // fnFinish(status : int, errors : string, jsonRet : ?)
+        sendCommand(fnFinish : Function, strMethod : string, ...args : any[]) : void
+    }
+
+    function initializeRpc(strHost : string, iPort : Number, strRpcUser : string, strRpcPassword : string) : void;
+
+    // arguments: callback, method, args...
+    // fnFinish(status : int, errors : string, jsonRet : ?)
+    function sendRpcCommand(fnFinish : Function, strMethod : string, ...args : any[]) : void
+
+    class MiscFunc
+    {
+        // 0. fnCallback                     like OnFinish(bSucc)
+        // 1. "strFromPriKey"                (string, required) The wif private key for input coins
+        // 2. "strToAddress"                 (string, required) Send to address
+        // 3. "fAmount"                      (numeric or string, required) The amount in MGC to send. eg 0.1
+        // 4. "strChargeAddress"             (string, optional) The address for change coins, empty will use from address
+        // 5. "fFee"                         (numeric or string, optional) The amount in MGC to for fee eg 0.0001, default 0 and will calc fee by system
+        static transferByRpc(fnCallback : Function, strFromPriKey : string, strToAddress : string, fAmount : Number, strChargeAddress ?: string, fFee ?: Number);
+    }
 }
 

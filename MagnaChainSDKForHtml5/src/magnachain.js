@@ -5929,7 +5929,7 @@ addNetwork({
     scripthash: 62,     // 0x3e S scripthash: 0x05,
     contracthash: 69,   //0x45
     privatekey: 0x80,
-    
+
     xpubkey: 0x0488b21e,
     xprivkey: 0x0488ade4,
     networkMagic: 0xf9beb4d9,
@@ -15005,7 +15005,7 @@ Transaction.prototype.WriteExtra = function (bw, sign)
     {
         bw.write(this.contractdata.address);
         this.contractdata.sender.WriteForCl(bw);
-        
+
         bw.writeVarintNum(this.contractdata.codeOrFunc.length);
         bw.write(this.contractdata.codeOrFunc);
 
@@ -15072,7 +15072,7 @@ Transaction.prototype.ReadExtra = function (br)
         this.contractdata.args = br.readVarLengthBuffer();
 
         this.contractdata.amountOut = br.readUInt64LEBN();
-        if(!sign)
+        if (!sign)
         {
             var scriptBuffer = br.readVarLengthBuffer();
             this.contractdata.signature = Script.fromBuffer(scriptBuffer);
@@ -15365,10 +15365,10 @@ Transaction.prototype.from = function (utxo, pubkeys, threshold)
     return this;
 };
 
-Transaction.prototype.setOutputsFromCoins = function(coins)
+Transaction.prototype.setOutputsFromCoins = function (coins)
 {
     var outs = new Array();
-    for (var i=0;i<coins.length;i++)
+    for (var i = 0; i < coins.length; i++)
     {
         var coin = coins[i];
         outs.push(new Output({
@@ -15379,7 +15379,7 @@ Transaction.prototype.setOutputsFromCoins = function(coins)
     this.setOutputs(outs);
 }
 
-Transaction.prototype.setOutputs = function(outputs)
+Transaction.prototype.setOutputs = function (outputs)
 {
     for (var i = 0; i < this.inputs.length; i++)
     {
@@ -16005,16 +16005,16 @@ Transaction.prototype.WriteForContractSign = function (stream)
 
 Transaction.prototype.IsSmartContract = function ()
 {
-    return this.version == PUBLISH_CONTRACT_VERSION || CALL_CONTRACT_VERSION;
+    return this.version == PUBLISH_CONTRACT_VERSION || this.version == CALL_CONTRACT_VERSION;
 }
 
 // isContractOut no need to sign
 Transaction.prototype.hasAllInputSign = function ()
 {
-  return _.every(this.inputs.map(function (input)
-  {
-    return input.output.script.isContractOut() || (input._scriptBuffer && input._scriptBuffer.length > 0);
-  }));
+    return _.every(this.inputs.map(function (input)
+    {
+        return input.output.script.isContractOut() || (input._scriptBuffer && input._scriptBuffer.length > 0);
+    }));
 };
 
 /* Signature handling */
@@ -16063,11 +16063,11 @@ Transaction.prototype.sign = function (privateKey, sigtype)
     return this;
 };
 
-Transaction.prototype.signSmartContract = function(privateKey, sigtype)
+Transaction.prototype.signSmartContract = function (privateKey, sigtype)
 {
     if (this.IsSmartContract() && this.contractdata.sender != null)
     {
-        var hashSign = Script.SignatureHashForContract(this);        
+        var hashSign = Script.SignatureHashForContract(this);
         var privKey = new PrivateKey(privateKey);
 
         sigtype = sigtype || Signature.SIGHASH_ALL;
@@ -16078,11 +16078,11 @@ Transaction.prototype.signSmartContract = function(privateKey, sigtype)
             });
 
             //console.log("contract sig: " + sig);
-             var script = new Script();
-             script.add(BufferUtil.concat([
-                 sig.toBuffer(),
-                 BufferUtil.integerAsSingleByteBuffer(sigtype || Signature.SIGHASH_ALL)
-             ]));
+            var script = new Script();
+            script.add(BufferUtil.concat([
+                sig.toBuffer(),
+                BufferUtil.integerAsSingleByteBuffer(sigtype || Signature.SIGHASH_ALL)
+            ]));
             this.contractdata.signature = script;//new Script(sig);
         }
     }
@@ -16286,3 +16286,278 @@ Transaction.prototype.enableRBF = function ()
 
 magnachain.Transaction = Transaction;
 // transaction/transaction end----------------------------------------------------------------------
+
+// RPC function begin-------------------------------------------------------------------------------
+function getXmlHttpRequest() 
+{
+    if (window.XMLHttpRequest) 
+    {
+        //主流浏览器提供了XMLHttpRequest对象
+        return new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) 
+    {
+        //低版本的IE浏览器没有提供XMLHttpRequest对象
+        //所以必须使用IE浏览器的特定实现ActiveXObject
+        return new ActiveXObject("Microsoft.XMLHttpRequest");
+    }
+}
+
+function isEmpty(obj)
+{
+    if (typeof obj == "undefined" || obj == null || obj == "")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+function RpcClient(opts)
+{
+    opts = opts || {};
+    this.host = opts.host || 'http://127.0.0.1';
+    this.rpcport = opts.rpcport || 8201;
+    this.rpcuser = opts.rpcuser || 'user';
+    this.rpcpassword = opts.rpcpassword || 'pwd';
+    //this.protocol = (opts.protocol == 'http') ? http : https;
+    this.protocol = getXmlHttpRequest();
+    this.protocol.withCredentials = true;
+    //this.batchedCalls = null;
+    //this.disableAgent = opts.disableAgent || false;
+
+    this.protocol.timeout = 3000;
+    this.protocol.ontimeout = function (event)
+    {
+        console.log("Request timeout!");
+    }
+}
+
+// arguments: callback, method, args...
+// callback(status : int, errors : string, jsonRet : ?)
+RpcClient.prototype.sendCommand = function ()
+{
+    var arrArgsRaw;
+
+    if ( arguments.length == 1 && Array.isArray(arguments[0]))
+    {
+        arrArgsRaw = arguments[0];
+    }
+    else
+    {
+        arrArgsRaw = Array.prototype.slice.apply(arguments);
+    }
+
+    var i;
+
+    var arrArgs = new Array();
+    for ( i = 0; i < arrArgsRaw.length; i++ )
+    {
+        if ( arrArgsRaw[i] != null && arrArgsRaw[i] != undefined)
+        {
+            arrArgs.push(arrArgsRaw[i]);
+        }
+    }
+
+    if (arrArgs.length < 2)
+    {
+        console.log("Too less arguments");
+        return;
+    }
+
+    var req = {};
+    
+    req['method'] = arrArgs[1];
+    if (arrArgs.length > 2)
+    {
+        //req['params'] = slice(arguments, 2, arguments.length - 1);
+        req['params'] = arrArgs.slice(2);
+    }
+
+    var jsonReq = JSON.stringify(req);
+
+    //var formData = new FormData();
+    //formData.append('tel', '18217767969');
+    //formData.append('psw', '111111');
+    var url = this.host + ':' + this.rpcport.toString();
+    this.protocol.open('POST', url);
+
+    var auth = Buffer(this.rpcuser + ':' + this.rpcpassword).toString('base64');
+
+    this.protocol.setRequestHeader('Content-Length', jsonReq.length);
+    this.protocol.setRequestHeader('Content-Type', 'application/json');
+    this.protocol.setRequestHeader('Authorization', 'Basic ' + auth);
+
+    this.protocol.send(jsonReq);
+
+    var fnCallback = arrArgs[0];
+    this.protocol.onreadystatechange = function ()
+    {
+        if (this.readyState === 4)  //4表示准备完成
+        {
+            if (this.status === 200)  //200表示回调成功
+            {
+                //console.log(this.responseText);
+
+                //返回的数据,这里返回的是json格式数据
+                var result = JSON.parse(this.responseText);
+                if (fnCallback != null)
+                {
+                    fnCallback(this.status, result.error, result.result);
+                }
+            }
+            else 
+            {
+                var error = "Request was failure, status: " + this.status + ", " + this.statusText;
+                //console.log(errors);
+                if (fnCallback != null)
+                {
+                    fnCallback(this.status, error, null);
+                }
+            }
+        }
+        else
+        {
+
+        }
+    };
+}
+
+var _MCRpcSig = null;
+
+function initializeRpc(strHost, iPort, strRpcUser, strRpcPassword)
+{
+    if (_MCRpcSig != null)
+    {
+        return;
+    }
+
+    var config =
+        {
+            rpcuser: strRpcUser,
+            rpcpassword: strRpcPassword,
+            host: strHost,
+            port: iPort
+        };
+
+    _MCRpcSig = new RpcClient(config);
+}
+
+// arguments: callback, method, args...
+// callback(status : int, errors : string, jsonRet : ?)
+function sendRpcCommand()
+{
+    if (_MCRpcSig == null)
+    {
+        console.log("RpcClient has not initialized!");
+        return;
+    }
+
+    var arrArgs = Array.prototype.slice.apply(arguments);
+    _MCRpcSig.sendCommand(arrArgs);
+}
+
+magnachain.RpcClient = RpcClient;
+magnachain.initializeRpc = initializeRpc;
+magnachain.sendRpcCommand = sendRpcCommand;
+// RPC function end---------------------------------------------------------------------------------
+
+// MiscFunc begin-----------------------------------------------------------------------------------
+var MiscFunc = {};
+
+// 0. fnCallback                     like OnFinish(bSucc)
+// 1. "strFromPriKey"                (string, required) The wif private key for input coins
+// 2. "strToAddress"                 (string, required) Send to address
+// 3. "fAmount"                      (numeric or string, required) The amount in MGC to send. eg 0.1
+// 4. "strChargeAddress"             (string, optional) The address for change coins, empty will use from address
+// 5. "fFee"                         (numeric or string, optional) The amount in MGC to for fee eg 0.0001, default 0 and will calc fee by system
+var _MCRpcTransfering = false;
+
+function transferByRpc(fnCallback, strFromPriKey, strToAddress, fAmount, strChargeAddress, fFee)
+{
+    if (_MCRpcSig == null)
+    {
+        console.log("RpcClient has not initialized, can not transfer by Rpc.");
+        return;
+    }
+
+    if (isEmpty(strFromPriKey) || isEmpty(strToAddress) || fAmount <= 0.0)
+    {
+        console.log("Invalid paraments!");
+        return;
+    }
+
+    if (_MCRpcTransfering)
+    {
+        console.log("Pre transfer has not done, ignore!");
+        return;
+    }
+
+    _MCRpcTransfering = true;
+
+    var kPriKey = PrivateKey.fromWIF(strFromPriKey);
+    var strFromAddress = kPriKey.toAddress().toString();
+
+    var OnRpcSigned = function (status, error, jsonRet)
+    {
+        if (status != 200 || (error != null && error != undefined))
+        {
+            console.log("OnRpcSigned status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+
+            _MCRpcTransfering = false;
+
+            if (fnCallback != null)
+            {
+                fnCallback(false);
+            }
+            return;
+        }
+
+        _MCRpcTransfering = false;
+        if (fnCallback != null)
+        {
+            fnCallback(true);
+        }
+    }
+
+    var OnRpcPreTransaction = function (status, error, jsonRet)
+    {
+        if (status != 200 || (error != null && error != undefined))
+        {
+            console.log("OnRpcPreTransaction status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+
+            _MCRpcTransfering = false;
+
+            if (fnCallback != null)
+            {
+                fnCallback(false);
+            }
+            return;
+        }
+        //console.log("OnRpcPreTransaction status: " + status + " error: " + error + " msg: " + JSON.stringify(jsonRet));
+
+        var kTras = new Transaction(jsonRet.txhex);
+        kTras.setOutputsFromCoins(jsonRet.coins);
+
+        //kTras.sign(prikeys);
+        kTras.sign(kPriKey);
+
+        var txsignedhex = kTras.toString();
+        //console.log("signed txhex: " + txsignedhex);
+
+        sendRpcCommand(OnRpcSigned, "sendrawtransaction", txsignedhex);
+    }
+
+    if (isEmpty(strChargeAddress))
+    {
+        strChargeAddress = strFromAddress;
+    }
+
+    sendRpcCommand(OnRpcPreTransaction, "premaketransaction", strFromAddress, strToAddress, strChargeAddress, fAmount, fFee);
+}
+MiscFunc.transferByRpc = transferByRpc;
+
+magnachain.MiscFunc = MiscFunc;
+// MiscFunc end-------------------------------------------------------------------------------------
